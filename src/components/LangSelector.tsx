@@ -1,8 +1,10 @@
 import React from 'react';
+
 type Props = {
   lang: string,
   setLang: React.Dispatch<React.SetStateAction<string>>,
 }
+
 export const LangSelector: React.FC<Props> = ({lang, setLang}) => {
   return (
     <select

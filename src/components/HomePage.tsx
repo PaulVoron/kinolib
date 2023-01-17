@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { LangContext } from '../utils/LangContext';
-
+import { getTranslation } from '../utils/getTranslation';
 export const HomePage = () => {
   const lang = useContext(LangContext);
 
@@ -16,6 +16,7 @@ export const HomePage = () => {
   return (
     <h1>
       {renderSwitch(lang)}
+      {getTranslation('homepage.title', lang)}
     </h1>
   );
 }

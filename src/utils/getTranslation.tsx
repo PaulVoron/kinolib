@@ -1,9 +1,11 @@
-const translation = {
+const translation: Record<string, Record<string, string>> = {
   'en-En': {
-    'homePage.title': 'Home Page',
+    'homepage.title': 'Home Page',
+    'homepage.buttonTitle': 'Load films',
   },
   'uk-Uk': {
-    'homePage.title': 'Домашня сторінка',
+    'homepage.title': 'Домашня сторінка',
+    'homepage.buttonTitle': 'Завантажити фільми',
   }
 };
 

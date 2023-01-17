@@ -11,15 +11,15 @@ import { Data } from './types/Data';
 // const url = 'https://jsonplaceholder.typicode.com/todos/';
 // const url = 'https://api.themoviedb.org/3/movie/1550?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c&language=uk-UK';
 // const url = 'https://api.themoviedb.org/3/discover/movie?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c&language=uk-UK&sort_by=popularity.desc&page=1'
-const url = 'https://api.themoviedb.org/3/discover/movie?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c&language=uk-UK&sort_by=popularity.desc';
+const url = 'https://api.themoviedb.org/3/discover/movie?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c&sort_by=popularity.desc';
 
 function App() {
   const [lang, setLang] = useState('en-En');
   const [data, setData] = useState<Data[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function fetchData() {
-    const res = await fetch(url);
+  async function fetchData(lang: string) {
+    const res = await fetch(url + `&language=${lang}`);
     res
       .json()
       .then(data => {
@@ -40,7 +40,7 @@ function App() {
 
   const handleClick = () => {
     setIsLoading(true);
-    fetchData();
+    fetchData(lang);
     // setData([]);
   };
 

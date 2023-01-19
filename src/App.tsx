@@ -80,46 +80,46 @@ function App() {
   return (
     <LangContext.Provider value={lang}>
       <MenuContext.Provider value={currentMenu}>
+        <div className="container" style={{height: "100%"}}>
+          <Layout>
+            <Header className="header" style={{ display:'flex', position: 'sticky', top: 0, zIndex: 1, width: '100%' }}>
+              <div className="logo" style={{ padding: '0 42px', color: 'white', fontSize:'24px' }}>
+                <Link 
+                  to="/"
+                >
+                  TOP-FILMS
+                </Link>
+              </div>
 
-        <Layout>
-          <Header className="header" style={{ display:'flex', position: 'sticky', top: 0, zIndex: 1, width: '100%' }}>
-            <div className="logo" style={{ padding: '0 42px', color: 'white', fontSize:'24px' }}>
-              <Link 
-                to="/"
-              >
-                TOP-FILMS
-              </Link>
-            </div>
+              <Navigation setCurrentMenu={setCurrentMenu} />
+              <LangSelector lang={lang} setLang={setLang} />
+            </Header>
 
-            <Navigation setCurrentMenu={setCurrentMenu} />
+            <Content style={{ padding: '0 50px',}}>
+              <Layout style={{ padding: '24px 0', background: colorBgContainer, minHeight: 'calc(100vh - 131px)' }}>
+                <Sider style={{ background: colorBgContainer }} width={200}>
+                  <Menu
+                    mode="inline"
+                    defaultSelectedKeys={['1']}
+                    defaultOpenKeys={['sub4']}
+                    style={{ height: '100%' }}
+                    items={sidemenuItems}
+                  />
+                </Sider>
 
-            <LangSelector lang={lang} setLang={setLang} />
-          </Header>
-          <Content style={{ padding: '0 50px' }}>
-
-            <Layout style={{ padding: '24px 0', background: colorBgContainer }}>
-              <Sider style={{ background: colorBgContainer }} width={200}>
-                <Menu
-                  mode="inline"
-                  defaultSelectedKeys={['1']}
-                  defaultOpenKeys={['sub4']}
-                  style={{ height: '100%' }}
-                  items={sidemenuItems}
-                />
-
-              </Sider>
-              <Content style={{ padding: '0 24px', minHeight: 280 }}>
-                <Routes>
-                  <Route path="/" element={ <HomePage setCurrentMenu={setCurrentMenu} />}/>
-                  <Route path="/films" element={ <FilmPage />}/>
-                </Routes>
-              </Content>
-            </Layout>
-          </Content>
-          <Footer style={{ textAlign: 'center', position: 'absolute', bottom: 0, zIndex: 1, width: '100%'}}>
-            React * TypeScript * AntDesign * Axios * TheMovieDbAPI - 2023 - Created by Paul Voronin
-          </Footer>
-        </Layout>
+                <Content style={{ padding: '0 24px', minHeight: 280 }}>
+                  <Routes>
+                    <Route path="/" element={ <HomePage setCurrentMenu={setCurrentMenu} />}/>
+                    <Route path="/films" element={ <FilmPage />}/>
+                  </Routes>
+                </Content>
+              </Layout>
+            </Content>
+            <Footer style={{ textAlign: 'center', width: '100%'}}>
+              React * TypeScript * AntDesign * Axios * TheMovieDbAPI - 2023 - Created by Paul Voronin
+            </Footer>
+          </Layout>
+        </div>
       </MenuContext.Provider>
     </LangContext.Provider>
   );

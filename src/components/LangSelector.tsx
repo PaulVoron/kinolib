@@ -1,4 +1,5 @@
 import React from 'react';
+import { Select } from 'antd';
 
 type Props = {
   lang: string,
@@ -7,12 +8,14 @@ type Props = {
 
 export const LangSelector: React.FC<Props> = ({lang, setLang}) => {
   return (
-    <select
-      value={lang}
-      onChange={(e) => setLang(e.target.value)}
-    >
-      <option value="en-En">English</option>
-      <option value="uk-Uk">Українська</option>
-    </select>
+    <Select
+      defaultValue={lang}
+      style={{ margin:'auto' }}
+      onChange={(value) => setLang(value)}
+      options={[
+        {value: 'en-EN', label: 'Engish'},
+        {value: 'uk-UK', label: 'Українська'},
+      ]}
+    />
   );
 }

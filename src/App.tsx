@@ -26,7 +26,7 @@ import { Genre } from './types/Genre';
 // const url = 'https://api.themoviedb.org/3/discover/movie?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c&sort_by=popularity.desc';
 // films.results
 // genre.genres
-const genreURL = 'genre/movie/list?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c&language=uk-UK';
+const genreURL = 'genre/movie/list?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -94,7 +94,7 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchData(genreURL, 'genres').then(data => {
+    fetchData(genreURL + `&language=${lang}`, 'genres').then(data => {
       genres = data;
       setIsLoading(false);
       console.log(genres);
@@ -103,7 +103,7 @@ function App() {
         setIsLoading(false);
         alert(error.message);
       });
-  }, []);
+  }, [lang]);
 
   const {
     token: { colorBgContainer },
@@ -174,6 +174,5 @@ export default App;
 
 
 //****************************************************************/
-//! Need to add spinner - npm install react-loader-spinner --save
-//! Need to add SASS - npm i sass
+
 //****************************************************************/

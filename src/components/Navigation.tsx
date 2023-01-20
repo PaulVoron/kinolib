@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { LangContext } from '../utils/LangContext';
 import { MenuContext } from '../utils/MenuContext';
@@ -11,16 +11,10 @@ type Props = {
 }
 
 export const Navigation: React.FC<Props> = ({setCurrentMenu}) => {
-  // const [current, setCurrent] = useState('1');
   const lang = useContext(LangContext);
   const current = useContext(MenuContext);
 
-  // if (changedMenu !== current) {
-  //   setCurrent(changedMenu);
-  // }
-
   const onClick: MenuProps['onClick'] = (e) => {
-    // setCurrent(e.key);
     setCurrentMenu(e.key);
   };
 

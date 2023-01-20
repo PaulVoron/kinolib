@@ -11,7 +11,7 @@ type Props = {
 
 export const HomePage: React.FC<Props> = ({setCurrentMenu}) => {
   const lang = useContext(LangContext);
-  const handleClick = () => {
+  const handleClickButton = () => {
     setCurrentMenu('2');
   };
 
@@ -24,7 +24,7 @@ export const HomePage: React.FC<Props> = ({setCurrentMenu}) => {
         <Button 
           type="primary"
           icon={<VideoCameraFilled />}
-          onClick={handleClick}
+          onClick={handleClickButton}
         >
           {getTranslation('nav.title2', lang)}
         </Button>

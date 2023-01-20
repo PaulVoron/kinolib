@@ -6,7 +6,7 @@ type Props = {
   setLang: React.Dispatch<React.SetStateAction<string>>,
 }
 
-export const LangSelector: React.FC<Props> = ({lang, setLang}) => {
+export const LangSelector: React.FC<Props> = React.memo(({lang, setLang}) => {
   return (
     <Select
       defaultValue={lang}
@@ -18,4 +18,4 @@ export const LangSelector: React.FC<Props> = ({lang, setLang}) => {
       ]}
     />
   );
-}
+});

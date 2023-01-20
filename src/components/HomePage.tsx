@@ -18,7 +18,7 @@ export const HomePage: React.FC<Props> = ({setCurrentMenu}) => {
   return (
     <>
       <h1>
-        {getTranslation('homepage.title', lang)}
+        {getTranslation('homePage.title', lang)}
       </h1>
       <Link to="/films">
         <Button 

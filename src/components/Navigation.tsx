@@ -31,7 +31,7 @@ export const Navigation: React.FC<Props> = ({setCurrentMenu}) => {
     },
     {
       key: '3', 
-      label: (<Link to="/random">{getTranslation('nav.title3', lang)}</Link>), 
+      label: (<Link to="/random_film">{getTranslation('nav.title3', lang)}</Link>), 
       icon: <QuestionCircleTwoTone />
     }
   ];

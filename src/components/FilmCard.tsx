@@ -29,3 +29,19 @@ export const FilmCard: React.FC<Props> = ({ index, film }) => {
     </>
   );
 }
+
+//! setTodos(currentTodos => ([...currentTodos, createdTodo]));
+//! const visibleTodos = filterTodos(filterKind);
+
+// const filterTodos = (option: Filter) => {
+//   switch (option) {
+//     case Filter.Active:
+//       return todos.filter(todo => !todo.completed);
+
+//     case Filter.Completed:
+//       return todos.filter(todo => todo.completed);
+
+//     default:
+//       return todos;
+//   }
+// };

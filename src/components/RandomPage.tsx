@@ -17,8 +17,8 @@ export const RandomPage: React.FC<Props> = () => {
   const lang = useContext(LangContext);
   const [isLoading, setIsLoading] = useState(false);
   const [films, setFilms] = useState<Film[]>([]);
+  const [filmIndex, setFilmIndex] = useState(0);
   let randomFilm: Film | null = null;
-  let filmIndex: number = 0;
 
   const apiKey = '?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c';
   const limiter = '&include_adult=false&include_video=false';
@@ -31,7 +31,8 @@ export const RandomPage: React.FC<Props> = () => {
     fetchData(url, key)
       .then(data => {
         setIsLoading(false);
-        // console.log(data);
+        console.log(url);
+        console.log(data);
         setFilms(data);
       })
       .catch(() => {
@@ -52,7 +53,7 @@ export const RandomPage: React.FC<Props> = () => {
   ) => {
     const randomNumber = Math.floor(Math.random() * 100) + 1;
     const page = Math.ceil(randomNumber / 20);
-    const filmIndex = randomNumber - (page - 1) * 20 - 1;
+    setFilmIndex(randomNumber - (page - 1) * 20 - 1);
     const requestURL = filmURL + typeOfSort + `&page=${page}`;
     
     console.log('randomNumber=' + randomNumber + '; page=' + page + '; filmIndex=' + filmIndex);

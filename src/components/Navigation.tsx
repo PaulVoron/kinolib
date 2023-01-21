@@ -1,22 +1,15 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { LangContext } from '../utils/LangContext';
-import { MenuContext } from '../utils/MenuContext';
 import { getTranslation } from '../utils/getTranslation';
 import { MenuProps, Menu } from 'antd';
 import { QuestionCircleTwoTone, VideoCameraFilled } from '@ant-design/icons';
+import { getActiveLocation } from '../utils/getActiveLocation';
 
-type Props = {
-  setCurrentMenu: React.Dispatch<React.SetStateAction<string>>,
-}
-
-export const Navigation: React.FC<Props> = ({setCurrentMenu}) => {
+export const Navigation = () => {
   const lang = useContext(LangContext);
-  const current = useContext(MenuContext);
-
-  const onClick: MenuProps['onClick'] = (e) => {
-    setCurrentMenu(e.key);
-  };
+  const location = useLocation();
+  let activeMenu = getActiveLocation(location.pathname);
 
   const menuItems: MenuProps['items'] = [
     {
@@ -41,9 +34,8 @@ export const Navigation: React.FC<Props> = ({setCurrentMenu}) => {
       <Menu 
         theme="dark" //light
         mode="horizontal" 
-        selectedKeys={[current]}
+        selectedKeys={[activeMenu]}
         items={menuItems}
-        onClick={onClick}
       />
     </nav>
   );

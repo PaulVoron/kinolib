@@ -58,7 +58,6 @@ export function FilmPage() {
       </h1>
 
       {/* {isLoading && <Spinner />}
-      {error && <ErrorMessage error={error} />} */}
 
       {/* {products.map(product => (
         <Product

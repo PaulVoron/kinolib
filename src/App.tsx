@@ -1,8 +1,7 @@
 import './App.css';
 import React, { useState } from 'react';
 import { LangContext } from './utils/LangContext';
-import { MenuContext } from './utils/MenuContext';
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import { HomePage } from './components/HomePage';
 import { FilmPage } from './components/FilmPage';
 import { RandomPage } from './components/RandomPage';
@@ -11,8 +10,7 @@ import { LangSelector } from './components/LangSelector';
 import { MenuProps, Layout, Menu, theme } from 'antd';
 import { FunnelPlotTwoTone , QuestionCircleTwoTone } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { Spinner } from './components/Spinner';
-import { getTranslation } from './utils/getTranslation';
+import { getActiveLocation } from './utils/getActiveLocation';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -41,19 +39,20 @@ const sidemenuItems: MenuProps['items'] = [
 
 function App() {
   const [lang, setLang] = useState('uk-UK'); //en-EN
-  const [currentMenu, setCurrentMenu] = useState('1');
   
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
   const handleClickLogo = () => {
-    setCurrentMenu('1');
+    activeMenu = '1';
   };
+
+  const location = useLocation();
+  let activeMenu = getActiveLocation(location.pathname);
 
   return (
     <LangContext.Provider value={lang}>
-      <MenuContext.Provider value={currentMenu}>
         <div className="container" style={{height: "100%"}}>
           <Layout>
             <Header className="header" style={{ display:'flex', position: 'sticky', top: 0, zIndex: 1, width: '100%' }}>
@@ -71,13 +70,14 @@ function App() {
                 </Link>
               </div>
 
-              <Navigation setCurrentMenu={setCurrentMenu} />
+              <Navigation />
+
               <LangSelector lang={lang} setLang={setLang} />
             </Header>
 
             <Content style={{ padding: '0 50px',}}>
               <Layout style={{ padding: '24px 0', background: colorBgContainer, minHeight: 'calc(100vh - 131px)' }}>
-                {currentMenu === '2' &&
+                {activeMenu === '2' &&
                   <Sider style={{ background: colorBgContainer }} width={200}>
                     <Menu
                       mode="inline"
@@ -90,7 +90,7 @@ function App() {
                 }
                 <Content style={{ padding: '0 24px', minHeight: 280 }}>
                   <Routes>
-                    <Route path="/" element={<HomePage setCurrentMenu={setCurrentMenu} />}/>
+                    <Route path="/" element={<HomePage />}/>
                     <Route path="/films" element={ <FilmPage />}/>
                     <Route path="/random_film" element={ <RandomPage />}/>
                   </Routes>
@@ -98,11 +98,10 @@ function App() {
               </Layout>
             </Content>
             <Footer style={{ textAlign: 'center', width: '100%'}}>
-              React * TypeScript * AntDesign * TheMovieDbAPI - 2023 - Created by Paul Voronin
+              React * TypeScript * AntDesign * Axios * TheMovieDbAPI - 2023 - Created by Paul Voronin
             </Footer>
           </Layout>
         </div>
-      </MenuContext.Provider>
     </LangContext.Provider>
   );
 }

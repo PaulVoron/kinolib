@@ -7,10 +7,6 @@ import { Genre } from '../types/Genre';
 import { Film } from '../types/Film';
 import TempComp from './TempComp';
 
-// const url = 'discover/movie?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c&language=uk-UK&sort_by=popularity.desc&page=1'
-// const url = 'discover/movie?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c&sort_by=popularity.desc';
-// films.results
-
 export const FilmPage = React.memo(() => {
   const lang = useContext(LangContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,49 +23,43 @@ export const FilmPage = React.memo(() => {
   const defaultSort = '&sort_by=popularity.desc';
   const filmURL = 'discover/movie' + apiKey + limiter + defaultSort;
 
-  async function getDataFromAPI(url: string, key: string, lang: string) {
-    console.log(url);
+  async function getDataFromApi(url: string, key: string, lang: string) {
     setIsLoading(true);
     fetchData(url + '&language=' + lang, key)
       .then(data => {
         setIsLoading(false);
-        // console.log(data);
         if (key === 'genres' && lang === 'uk-UK') {
           setGenresUk(data);
         } else if (key === 'genres') {
           setGenresEn(data);
         }
         if (key === 'results' && lang === 'uk-UK') {
-          setFilmsUk(data);
+          setFilmsUk((cur) => cur.concat(data));
         } else if (key === 'results') {
-          setFilmsEn(data);
+          setFilmsEn((cur) => cur.concat(data));
         }
       })
       .catch(() => {
         setIsLoading(false);
       });
   }
- 
+
   async function loadData() {
-    await getDataFromAPI(filmURL + '&page=1', 'results', 'uk-UK');
-    let arr = [...filmsEn];
-    console.log('arr = ' + arr);
-    await getDataFromAPI(filmURL + '&page=2', 'results', 'uk-UK');
-    // arr = arr.push(filmsEn);
+    getDataFromApi(genreURL, 'genres', 'uk-UK');
+    getDataFromApi(genreURL, 'genres', 'en-EN');
+
+    for (let i = 1; i < 6; i++) {
+      getDataFromApi(`${filmURL}&page=${i}`, 'results', 'uk-UK');
+      getDataFromApi(`${filmURL}&page=${i}`, 'results', 'en-EN');
     }
-  
+  }
 
   useEffect(() => {
-    getDataFromAPI(genreURL, 'genres', 'uk-UK');
-    getDataFromAPI(genreURL, 'genres', 'en-EN');
     loadData();
-    // getDataFromAPI(filmURL + '&page=1', 'results', 'en-EN');
-    // console.log(genresUk);
-  }, [filmURL, genreURL]);
+  }, []);
 
   return (
     <div>
-      
       <h1>
         {getTranslation('filmPage.title', lang)}
       </h1>
@@ -81,7 +71,7 @@ export const FilmPage = React.memo(() => {
         {(genresEn.length !== 0) && genresEn[0].name}
       </h1>
 
-      {filmsUk.length !==0 && <TempComp filmsUk={filmsUk} />}
+      {genresUk.length !==0 && <TempComp films={filmsUk.slice(0, 100)} />}
       {/* {isLoading && <Spinner />}
 
       {/* {products.map(product => (

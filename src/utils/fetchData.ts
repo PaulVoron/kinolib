@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 
 export async function fetchData(url: string, key: string) {
   const baseURL =  "https://api.themoviedb.org/3/";
-
+  console.log(url);
   try {
     const response = await axios.get(
       baseURL + url

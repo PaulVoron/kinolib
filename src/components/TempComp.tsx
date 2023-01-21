@@ -4,14 +4,16 @@ import { Film } from '../types/Film';
 
 
 type Props = {
-  filmsUk: Film[] | null,
+  films: Film[] | null,
 }
 
-const TempComp: React.FC<Props> = ({ filmsUk }) => {
-  if (filmsUk) {
-    // console.log(filmsUk);
-    // console.log(filmsUk[0].title);
-    // console.log(filmsUk);
+const TempComp: React.FC<Props> = ({ films }) => {
+  if (films) {
+
+    console.log(films.length);
+    for (let i = 0; i < films.length; i++) {
+      console.log(films[i].title);
+    }
   }
 
   return (

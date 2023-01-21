@@ -7,6 +7,13 @@ const translation: Record<string, Record<string, string>> = {
     'filmPage.title': 'Top Films',
     'randomPage.title': 'What would we watch today?',
     'randomButton.text': 'Random Film',
+    'card.originalTitle': 'Original Title',
+    'card.overview': 'Overview',
+    'card.releaseDate': 'Release Date',
+    'card.title': 'Title',
+    'card.voteAverage': 'Vote Average',
+    'card.voteCount': 'Vote Count',
+    'card.genre': 'Genre',
   },
   'uk-UK': {
     'homePage.title': 'Вітаємо!',
@@ -16,6 +23,13 @@ const translation: Record<string, Record<string, string>> = {
     'filmPage.title': 'Кращі фільми',
     'randomPage.title': 'Що подивимось сьогодні?',
     'randomButton.text': 'Випадковий фільм',
+    'card.originalTitle': 'Оригінальна назва',
+    'card.overview': 'Опис',
+    'card.releaseDate': 'Дата релізу',
+    'card.title': 'Назва',
+    'card.voteAverage': 'Оцінка',
+    'card.voteCount': 'Кількість оцінок',
+    'card.genre': 'Жанр',
   }
 };
 

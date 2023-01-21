@@ -7,6 +7,7 @@ import { SpinnerSquare } from './SpinnerSquare';
 import { fetchData } from '../utils/fetchData';
 import { Genre } from '../types/Genre';
 import { Film } from '../types/Film';
+import { FilmCard } from '../components/FilmCard';
 
 type Props = {
   // setCurrentMenu: React.Dispatch<React.SetStateAction<string>>,
@@ -16,12 +17,13 @@ export const RandomPage: React.FC<Props> = () => {
   const lang = useContext(LangContext);
   const [isLoading, setIsLoading] = useState(false);
   const [films, setFilms] = useState<Film[]>([]);
-  let randomFilm: Film;
+  let randomFilm: Film | null = null;
+  let filmIndex: number = 0;
 
   const apiKey = '?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c';
   const limiter = '&include_adult=false&include_video=false';
   const sortByPopularity = '&sort_by=popularity.desc';
-  const sortByRating = '&sort_by=popularity.desc';
+  const sortByRating = '&sort_by=vote_average.desc';
   const language = `&language=${lang}`;
   const filmURL = 'discover/movie' + apiKey + limiter + language;
 
@@ -29,7 +31,7 @@ export const RandomPage: React.FC<Props> = () => {
     fetchData(url, key)
       .then(data => {
         setIsLoading(false);
-        console.log(data);
+        // console.log(data);
         setFilms(data);
       })
       .catch(() => {
@@ -86,6 +88,9 @@ export const RandomPage: React.FC<Props> = () => {
       </Button>
       
       {isLoading && <SpinnerSquare />}
+
+      {films.length !== 0 && <FilmCard index={filmIndex} film={films[filmIndex]} />}
+
     </>
   );
 }

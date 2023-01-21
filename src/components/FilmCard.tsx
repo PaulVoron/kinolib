@@ -13,7 +13,7 @@ const imgUrl='https://www.themoviedb.org/t/p/w600_and_h900_bestv2';
 
 export const FilmCard: React.FC<Props> = ({ index, film }) => {
   const lang = useContext(LangContext);
-  console.log(index);
+  // console.log(index);
 
   return (
     <>
@@ -45,3 +45,10 @@ export const FilmCard: React.FC<Props> = ({ index, film }) => {
 //       return todos;
 //   }
 // };
+
+// async function loadData() {
+//   await Promise.all([
+//    setGenresUk(getDataFromAPI(genreURL, 'genres', 'uk-UK')),
+//    setGenresEn(getDataFromAPI(genreURL, 'genres', 'en-EN')),
+//   ])
+//  }

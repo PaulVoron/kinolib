@@ -23,6 +23,9 @@ export const FilmPage = React.memo(() => {
   const genreURL = `genre/movie/list${apiKey}`;
   const defaultSort = '&sort_by=popularity.desc';
   const filmURL = `discover/movie${apiKey}${limiter}${defaultSort}`;
+  
+  let filmsToTableUk: Film[] = [];
+  let filmsToTableEn: Film[] = [];
 
   async function getDataFromApi(url: string, key: string, lang: string) {
     setIsLoading(true);
@@ -45,23 +48,36 @@ export const FilmPage = React.memo(() => {
       });
   }
 
-  async function loadData() {
-    getDataFromApi(genreURL, 'genres', 'uk-UK');
-    getDataFromApi(genreURL, 'genres', 'en-EN');
-
-    for (let i = 1; i < 6; i++) {
+  async function loadFilms(num: number) {
+    const pagesQuantity = num / 20 + 1;
+    for (let i = 1; i < pagesQuantity; i++) {
       await getDataFromApi(`${filmURL}&page=${i}`, 'results', 'uk-UK');
       await getDataFromApi(`${filmURL}&page=${i}`, 'results', 'en-EN');
     }
   }
-
+  
+  function copySortMakeUniq (arr: Film[]) {
+    const newArr = arr.sort((a: Film, b: Film) => a.id - b.id)
+    .reduce((arr: Film[], el: Film) => {
+      if(!arr.length || arr[arr.length - 1].id !== el.id) {
+        arr.push(el);
+      }
+      return arr;
+    }, []);
+    
+    return newArr.sort((a: Film, b: Film) => b.popularity - a.popularity);
+  }
+  
   useEffect(() => {
-    loadData();
+    getDataFromApi(genreURL, 'genres', 'uk-UK');
+    getDataFromApi(genreURL, 'genres', 'en-EN');
+    loadFilms(100);
   }, []);
-
-  const filmsToTableUk = JSON.parse(JSON.stringify(filmsUk.slice(0, 100)));
-  const filmsToTableEn = JSON.parse(JSON.stringify(filmsEn.slice(0, 100)));
-
+  
+  
+  filmsToTableUk = copySortMakeUniq(filmsUk);
+  filmsToTableEn = copySortMakeUniq(filmsEn);
+    
   return (
     <div>
       <Title>

@@ -14,12 +14,15 @@ const translation: Record<string, Record<string, string>> = {
     'card.voteAverage': 'Vote Average',
     'card.voteCount': 'Vote Count',
     'card.genre': 'Genre',
+    'table.popularity': 'Рopularity',
     'table.poster': 'Poster',
     'table.title': 'Title',
     'table.genres': 'Genres',
     'table.rating': 'Rating',
     'table.count': 'Сount',
     'table.year': 'Year',
+    'table.button.clearFilter': 'Clear filters',
+    'table.button.clearAll': 'Clear filters and sorters',
   },
   'uk-UK': {
     'homePage.title': 'Вітаємо!',
@@ -36,12 +39,15 @@ const translation: Record<string, Record<string, string>> = {
     'card.voteAverage': 'Оцінка',
     'card.voteCount': 'Кількість оцінок',
     'card.genre': 'Жанр',
+    'table.popularity': 'Полулярність',
     'table.poster': 'Постер',
     'table.title': 'Назва',
     'table.genres': 'Жанри',
     'table.rating': 'Рейтинг',
     'table.count': 'Оцінок',
     'table.year': 'Рік',
+    'table.button.clearFilter': 'Скинути фільтри',
+    'table.button.clearAll': 'Скинути сортування та фільтри',
   }
 };
 

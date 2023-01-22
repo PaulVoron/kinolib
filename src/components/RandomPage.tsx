@@ -3,7 +3,7 @@ import { LangContext } from '../utils/LangContext';
 import { getTranslation } from '../utils/getTranslation';
 import { Button } from 'antd';
 import { QuestionCircleTwoTone } from '@ant-design/icons';
-import { SpinnerSquare } from './SpinnerSquare';
+import { Spinner } from './Spinner';
 import { fetchData } from '../utils/fetchData';
 import { Genre } from '../types/Genre';
 import { Film } from '../types/Film';
@@ -58,7 +58,7 @@ export const RandomPage: React.FC<Props> = () => {
     
     console.log('randomNumber=' + randomNumber + '; page=' + page + '; filmIndex=' + filmIndex);
     setIsLoading(true);
-    wait(2500).then(() => getFilm(requestURL, 'results'));
+    wait(1000).then(() => getFilm(requestURL, 'results'));
 
     if (films.length !== 0) {
       randomFilm = films[filmIndex];
@@ -88,7 +88,7 @@ export const RandomPage: React.FC<Props> = () => {
         {getTranslation('randomButton.text', lang)}
       </Button>
       
-      {isLoading && <SpinnerSquare />}
+      {isLoading && <Spinner />}
 
       {films.length !== 0 && <FilmCard index={filmIndex} film={films[filmIndex]} />}
 

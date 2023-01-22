@@ -23,6 +23,7 @@ const translation: Record<string, Record<string, string>> = {
     'table.year': 'Year',
     'table.button.clearFilter': 'Clear filters',
     'table.button.clearAll': 'Clear filters and sorters',
+    'table.annotation': 'About film:',
   },
   'uk-UK': {
     'homePage.title': 'Вітаємо!',
@@ -48,6 +49,7 @@ const translation: Record<string, Record<string, string>> = {
     'table.year': 'Рік',
     'table.button.clearFilter': 'Скинути фільтри',
     'table.button.clearAll': 'Скинути сортування та фільтри',
+    'table.annotation': 'Про фільм:',
   }
 };
 

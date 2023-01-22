@@ -31,7 +31,14 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
       key: 'poster',
       render: (imgUrl: string) => (
         <div>
-          <img src={posterURL + imgUrl} alt="poster" />
+          <img 
+            src={posterURL + imgUrl} 
+            alt="poster" 
+            style={{
+              width: '100%',
+              objectFit: 'cover',
+            }}
+          />
         </div>
       ),
     },
@@ -40,7 +47,7 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
       dataIndex: 'title',
       key: 'title',
       render: (text: string) => 
-      <span style={{ fontSize: '16px', fontWeight: 'bold'}}>{text}</span>,
+      <span style={{ fontWeight: 'bold'}}>{text}</span>,
     },
     {
       title: getTranslation('table.year', lang),
@@ -117,8 +124,6 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
     },
   ];
 
-  
-
   const handleChange: TableProps<Film>['onChange'] = (
     pagination, filters, sorter
   ) => {
@@ -147,7 +152,16 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
         rowKey={(record) => record.id}
         columns={columns}
         expandable={{
-          expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.overview}</p>,
+          expandedRowRender: (record) => (
+            <>
+            <p style={{ margin: 0, fontWeight: 'bold' }}>
+              {getTranslation('table.annotation', lang)}
+            </p>
+            <p style={{ margin: 0 }}>
+              {record.overview}
+            </p>
+            </>
+          ),
           rowExpandable: (record) => !!record.overview,
         }}
         dataSource={films}

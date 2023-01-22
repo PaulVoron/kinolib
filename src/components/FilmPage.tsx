@@ -87,7 +87,7 @@ export const FilmPage = React.memo(() => {
       </Title>
 
       {isLoading && <Spinner />}
-      
+
       <Row>
         <Col xs={24} md={24}>
           {filmsUk.length !==0 && (lang === 'uk-UK') ? (
@@ -97,17 +97,6 @@ export const FilmPage = React.memo(() => {
           )}
         </Col>
       </Row>
-      
-
-      {/* {genresUk.length !==0 && <TempComp films={filmsUk.slice(0, 100)} />} */}
-      {/* {isLoading && <Spinner />}
-
-      {/* {products.map(product => (
-        <Product
-          key={product.id}
-          product={product}
-        />
-      ))} */}
     </div>
   );
 });

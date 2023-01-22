@@ -32,7 +32,7 @@ export const Navigation = () => {
   return (
     <nav style={{ flexGrow:'1' }}>
       <Menu 
-        theme="dark" //light
+        theme="dark"
         mode="horizontal" 
         selectedKeys={[activeMenu]}
         items={menuItems}

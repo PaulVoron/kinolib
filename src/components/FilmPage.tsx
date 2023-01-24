@@ -5,13 +5,19 @@ import { Spinner } from './Spinner';
 import { fetchData } from '../utils/fetchData';
 import { Genre } from '../types/Genre';
 import { Film } from '../types/Film';
-import { Typography, Row, Col } from 'antd';
+import { 
+  Typography, 
+  Row, 
+  Col, 
+  FloatButton, 
+} from 'antd';
 import { TableFilms } from './TableFilms';
 
 const { Title } = Typography;
 
 export const FilmPage = React.memo(() => {
   const lang = useContext(LangContext);
+  
   const [isLoading, setIsLoading] = useState(false);
   const [genresUk, setGenresUk] = useState<Genre[]>([]);
   const [genresEn, setGenresEn] = useState<Genre[]>([]);
@@ -77,7 +83,7 @@ export const FilmPage = React.memo(() => {
   
   filmsToTableUk = copySortMakeUniq(filmsUk);
   filmsToTableEn = copySortMakeUniq(filmsEn);
-    
+  
   return (
     <div>
       <Title>
@@ -91,12 +97,20 @@ export const FilmPage = React.memo(() => {
       <Row>
         <Col xs={24} md={24}>
           {filmsUk.length !==0 && (lang === 'uk-UK') ? (
-            <TableFilms genres={genresUk} films={filmsToTableUk} />
+            <TableFilms 
+              genres={genresUk} 
+              films={filmsToTableUk} 
+            />
           ):(
-            <TableFilms genres={genresEn} films={filmsToTableEn} />
+            <TableFilms 
+              genres={genresEn} 
+              films={filmsToTableEn} 
+            />
           )}
         </Col>
       </Row>
+
+      <FloatButton.BackTop />
     </div>
   );
 });

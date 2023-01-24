@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Genre } from '../types/Genre';
 import { Film } from '../types/Film';
 import { getTranslation } from '../utils/getTranslation';
-import { Button, Space, Table, TableProps, Tag  } from 'antd';
+import { Button, Modal, Space, Table, TableProps, Tag  } from 'antd';
 import { LangContext } from '../utils/LangContext';
 import { genreColor } from '../utils/genreColor';
 
@@ -11,6 +11,7 @@ import type {
   FilterValue, 
   SorterResult 
 } from 'antd/es/table/interface';
+import { ModalWindow } from './ModalWindow';
 
 type Props = {
   genres: Genre[],
@@ -23,6 +24,8 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
   
   const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
   const [sortedInfo, setSortedInfo] = useState<SorterResult<Film>>({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modaldata, setmodaldata] = useState<Film | undefined>();
 
   const columns: ColumnsType<Film> = [
     {
@@ -140,6 +143,15 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
     setSortedInfo({});
   };
 
+  const showModal = (record: Film) => {
+    setmodaldata(record);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   console.log('filteredInfo = ' + filteredInfo);
 
   return (
@@ -168,11 +180,27 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
         bordered={true}
         onRow={(record, rowIndex) => {
           return {
-            onClick: (event) => {}, // click row
+            onClick: () => showModal(record), // click row
           };
         }}
         onChange={handleChange}
       />
+      <Modal 
+        bodyStyle={{}}
+        title={modaldata?.title} 
+        open={isModalOpen} 
+        onCancel={handleCloseModal}
+        footer={null}
+      >
+        <p>{modaldata?.overview}</p>
+        <p>Some contents...</p>
+      </Modal>
+
+      (modaldata) &&
+      <ModalWindow 
+        modaldata={modaldata}
+        onIsModalOpen={isModalOpen} 
+        onHandleCloseModal={handleCloseModal} />
     </>
   );
 };

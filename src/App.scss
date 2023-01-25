@@ -1,0 +1,85 @@
+.App {
+  text-align: center;
+}
+.logo {
+  white-space:nowrap;
+  padding: 0 42px; 
+  font-size:24px; 
+  font-weight: bold;
+}
+
+.logo-tmdb {
+  display: flex;
+  align-items: center;
+  margin: 0 20px;
+}
+
+.header {
+  display:flex; 
+  position: sticky;
+  top: 0;
+  z-index: 1; 
+  width: 100%;
+}
+
+.content {
+  padding: 0 50px;
+  background-color: #01b4e4;
+
+  &__sider {
+    padding: 24px 0;
+    min-height: calc(100vh - 135px);
+  }
+  &__body {
+    padding: 0 24px;
+    min-height: 280px;
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // text-align: 'center';
+  width: 100%;
+}
+
+.filmcontainer {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  height: 550px;
+  width: 100%;
+  display: flex;
+  margin-top: 20px;
+  // align-items: center;
+  // justify-content: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-color: rgba(0,0,0,0.5);
+  }
+}
+
+.filmcard {
+  position: relative;
+  display: flex;
+  margin: auto 50px;
+  // justify-content: center;
+  color: white;
+
+  &__poster {
+
+  }
+
+  &__info {
+    padding: 24px;
+  }
+}

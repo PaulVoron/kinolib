@@ -5,7 +5,7 @@ const translation: Record<string, Record<string, string>> = {
     'nav.title2': 'Top 100 films',
     'nav.title3': 'Random film',
     'filmPage.title': ' Popular Films',
-    'randomPage.title': 'What would we watch today?',
+    'randomPage.title': 'What will we watch today?',
     'randomButton.text': 'Random Film',
     'card.originalTitle': 'Original Title',
     'card.overview': 'Overview',

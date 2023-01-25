@@ -54,7 +54,7 @@ export const FilmPage = React.memo(() => {
       });
   }
 
-  async function loadFilms(num: number) {
+  async function loadFilms(num: number = 100) {
     const pagesQuantity = num / 20 + 1;
     for (let i = 1; i < pagesQuantity; i++) {
       await getDataFromApi(`${filmURL}&page=${i}`, 'results', 'uk-UK');
@@ -88,7 +88,7 @@ export const FilmPage = React.memo(() => {
     <div>
       <Title>
         TOP 
-        <span style={{ color: '#1677ff' }} > 100 </span>
+        <span style={{ color: '#01b4e4' }} > 100 </span>
         {getTranslation('filmPage.title', lang)}
       </Title>
 

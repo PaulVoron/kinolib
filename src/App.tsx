@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import { useState } from 'react';
 import { LangContext } from './utils/LangContext';
 import { Route, Routes, useLocation } from 'react-router-dom'
@@ -7,9 +7,11 @@ import { FilmPage } from './components/FilmPage';
 import { RandomPage } from './components/RandomPage';
 import { Navigation } from './components/Navigation';
 import { LangSelector } from './components/LangSelector';
-import { Layout, theme, Button } from 'antd';
+import { ConfigProvider, Layout, theme, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { getActiveLocation } from './utils/getActiveLocation';
+import TmdbHeaderLogo from './images/tmdbLogo1.svg';
+import TmdbFooterLogo from './images/tmdbLogo2.svg';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -28,40 +30,46 @@ export const App = () => {
   let activeMenu = getActiveLocation(location.pathname);
 
   return (
-    <LangContext.Provider value={lang}>
+    <ConfigProvider
+    theme={{
+      token: {
+        "fontSize": 14,
+        "colorPrimary": "#01b4e4",
+        "colorSuccess": "#90cea1",
+        // "colorPrimaryBg": "#0d253f"
+      },
+    }}
+    >
+
+      <LangContext.Provider value={lang}>
         <div className="container" style={{height: "100%"}}>
           <Layout>
-            <Header className="header" style={{ display:'flex', position: 'sticky', top: 0, zIndex: 1, width: '100%' }}>
+            <Header className="header">
               <div 
                 className="logo" 
-                style={{ 
-                  padding: '0 42px', 
-                  fontSize:'24px', 
-                  fontWeight: "bold"
-                }}
                 onClick={handleClickLogo}
               >
-                <Link to="/" style={{color: "white"}}>
+                <Link to="/" style={{color: "#90cea1"}}>
                   TOP-FILMS
                 </Link>
               </div>
-
               <Navigation />
-
+              <div className='logo-tmdb'>
+                <img src={TmdbHeaderLogo} height={40} alt="TMDB logo" />
+              </div>
               <LangSelector lang={lang} setLang={setLang} />
             </Header>
 
-            <Content style={{ padding: '0 50px',}}>
-              <Layout style={{ padding: '24px 0', background: colorBgContainer, minHeight: 'calc(100vh - 131px)' }}>
+            <Content className='content'>
+              <Layout className='content__sider' style={{ background: colorBgContainer }}>
                 {activeMenu === '2' &&
                   <Sider style={{ background: colorBgContainer }} width={200}>
-                    <Button>sdfasdfgadfgad f</Button>
-                    <Button>sdfasdfgadfgad f</Button>
-                    <Button>sdfasdfgadfgad f</Button>
-                    <Button>sdfasdfgadfgad f</Button>
+                    <Button>TOP 100 FILMS</Button>
+                    <Button>TOP 250 FILMS</Button>
+                    <Button>TOP 500 FILMS</Button>
                   </Sider>
                 }
-                <Content style={{ padding: '0 24px', minHeight: 280 }}>
+                <Content className='content__body'>
                   <Routes>
                     <Route path="/" element={<HomePage />}/>
                     <Route path="/films" element={ <FilmPage />}/>
@@ -70,20 +78,22 @@ export const App = () => {
                 </Content>
               </Layout>
             </Content>
-            <Footer style={{ textAlign: 'center', width: '100%'}}>
-              React * TypeScript * AntDesign * Axios * TheMovieDbAPI - 2023 - Created by Paul Voronin
+            <Footer className='footer'>
+              React * TypeScript * AntDesign * Axios
+              <img className='logo-tmdb' src={TmdbFooterLogo} height={20} alt="TMDB logo" />
+              TheMovieDB API - 2023 - Created by Paul Voronin
             </Footer>
           </Layout>
         </div>
-    </LangContext.Provider>
+      </LangContext.Provider>
+    </ConfigProvider>
   );
 }
 
 export default App;
 
-//****************************************************************/
-//! npm add react-countup
-
-//! npm i -g npm 
-//! npm i --save lodash
-//****************************************************************/
+//*************************************/
+      //! npm add react-countup
+      //! npm i -g npm 
+      //! npm i --save lodash
+//*************************************/

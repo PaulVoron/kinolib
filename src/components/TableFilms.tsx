@@ -97,6 +97,7 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
       .sort((a, b) => a.text.localeCompare(b.text)),
       filteredValue: filteredInfo.genres || null,
       onFilter: (value, record) => record.genre_ids.some(item => item === value),
+      filterMultiple: false,
     },
     {
       title: getTranslation('table.rating', lang),
@@ -178,9 +179,9 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
         }}
         dataSource={films}
         bordered={true}
-        onRow={(record, rowIndex) => {
+        onRow={(record) => {
           return {
-            onClick: () => showModal(record), // click row
+            onClick: () => showModal(record),
           };
         }}
         onChange={handleChange}

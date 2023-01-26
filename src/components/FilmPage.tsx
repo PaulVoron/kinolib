@@ -22,6 +22,8 @@ type Props = {
   genresEn: Genre[],
   isLoading: boolean,
   countFilms: number,
+  year: number | null,
+  genre: number | null,
 }
 
 export const FilmPage: React.FC<Props> = React.memo(({ 
@@ -31,15 +33,49 @@ export const FilmPage: React.FC<Props> = React.memo(({
   genresEn, 
   isLoading,
   countFilms,
+  year,
+  genre,
 }) => {
   const lang = useContext(LangContext);
- 
+  const genreUk = genresUk.find(item => item.id === genre)?.name;
+  const genreEn = genresEn.find(item => item.id === genre)?.name;
+
   return (
     <div>
       <Title>
-        TOP 
-        <span style={{ color: '#01b4e4' }} > {countFilms} </span>
-        {getTranslation('filmPage.title', lang)}
+        <>
+          TOP 
+          <span style={{ color: '#01b4e4' }} > {countFilms} </span>
+          {getTranslation('filmPage.title', lang)}
+
+          {(year && lang === 'uk-UK') ? (
+            <>
+              <span style={{ color: '#01b4e4' }}> {year}</span>
+              {' '} року
+            </>
+          ):('')}
+
+          {(year && lang === 'en-EN') ? (
+            <>
+              {' '} of
+              <span style={{ color: '#01b4e4' }}> {year}</span>
+            </>
+          ):('')}
+
+          {(genre && lang === 'uk-UK') ? (
+            <>
+              <br/> Жанр:
+              <span style={{ color: '#01b4e4' }}> {genreUk}</span>
+            </>
+          ):('')}
+
+          {(genre && lang === 'en-EN') ? (
+            <>
+              <br/> Genre:
+              <span style={{ color: '#01b4e4' }}> {genreEn}</span>
+            </>
+          ):('')}
+        </>
       </Title>
 
       {isLoading && <Spinner />}

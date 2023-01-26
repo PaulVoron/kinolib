@@ -46,7 +46,7 @@
     // justify-content: center;
     align-items: center;
     width: 200px;
-    margin-top: 72px;
+    margin-top: 52px;
     padding: 0 10px;
   }
 
@@ -61,7 +61,7 @@
   }
 
   &__title {
-    margin: 0 10px 8px;
+    margin: 20px 0 10px 8px;
     text-align: center;
     font-size: 16px;
     font-weight: bold;
@@ -69,6 +69,7 @@
 
   &__item {
     width: 100%;
+    margin-top: 10px;
   }
 }
 
@@ -136,6 +137,7 @@
 
   &__text {
     margin-top: 16px;
+    font-size: 16px;
   }
 
   &__line {

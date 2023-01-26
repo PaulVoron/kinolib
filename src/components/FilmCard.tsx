@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { StarFilled} from '@ant-design/icons';
+import { Rate } from 'antd';
+import { HeartFilled, HeartOutlined, StarFilled} from '@ant-design/icons';
 import { LangContext } from '../utils/LangContext';
 import { getTranslation } from '../utils/getTranslation';
 import { Genre } from '../types/Genre';
@@ -34,6 +35,13 @@ export const FilmCard: React.FC<Props> = ({ index, film }) => {
           <StarFilled style={{ color: "gold"}} /> 
           {' ' + film?.vote_average}
         </div>
+          <Rate 
+            allowHalf 
+            disabled
+            count = {10}
+            character={<HeartFilled />}
+            defaultValue={(film) ? film.vote_average : 0} 
+          />
         
         <div className='filmcard__votecount'>
           {getTranslation('card.voteCount', lang) + ' '}

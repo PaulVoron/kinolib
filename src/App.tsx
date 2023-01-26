@@ -63,11 +63,17 @@ export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [countFilms, setCountFilms] = useState(100);
   const [year, setYear] = useState<number | null>(null);
+  const [genre, setGenre] = useState<number | null>(null);
+  const [titleYear, setTitleYear] = useState<number | null>(null);
+  const [titleGenre, setTitleGenre] = useState<number | null>(null);
+
   const [form] = Form.useForm();
 
   const apiKey = '?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c';
   const limiter = '&include_adult=false&include_video=false';
   const genreURL = `genre/movie/list${apiKey}`;
+  const optionYearURL = '&primary_release_year=';
+  const optionGenreURL = '&with_genres=';
   const defaultSort = '&sort_by=popularity.desc';
   const filmURL = `discover/movie${apiKey}${limiter}${defaultSort}`;
   
@@ -98,10 +104,13 @@ export const App = () => {
 
   async function loadFilms(num: number = 100) {
     const pagesQuantity = num / 20 + 1;
+    const addGenre = (genre) ? optionGenreURL + genre : '';
+    const addYear = (year) ? optionYearURL + year : '';
+    const complexURL = filmURL + addGenre + addYear;
 
     for (let i = 1; i < pagesQuantity; i++) {
-      await getDataFromApi(`${filmURL}&page=${i}`, 'results', 'uk-UK');
-      await getDataFromApi(`${filmURL}&page=${i}`, 'results', 'en-EN');
+      await getDataFromApi(`${complexURL}&page=${i}`, 'results', 'uk-UK');
+      await getDataFromApi(`${complexURL}&page=${i}`, 'results', 'en-EN');
     }
   }
   
@@ -128,9 +137,10 @@ export const App = () => {
     setFilmsEn([]);
     setCountFilms(value);
     loadFilms(value);
+    setTitleYear(null);
+    setTitleGenre(null);
   };
 
-  //! ======================================================================
   const genresOptions = (genres: Genre[]) => {
     const options = genres.map(genre => {
       const option: any = {};
@@ -146,19 +156,36 @@ export const App = () => {
     value && setYear(value.get('year'));
   }
 
-  const handlerSelectGenre = (value: string) => {
-    console.log(`selected ${value}`);
+  const handlerSelectGenre = (value: number) => {
+    setGenre(value);
   };
   
   const handlerSearchGenre = (value: string) => {
-    console.log('search:', value);
+    // console.log('search:', value);
   };
 
+//! ======================================================================
   const handleSubmitButton = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent> 
       | React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
+    console.log('search year ' + year);
+    console.log('search genre ' + genre);
+    // form.resetFields();
+    setFilmsUk([]);
+    setFilmsEn([]);
+    loadFilms(countFilms);
+    setTitleYear(year);
+    setTitleGenre(genre);
+  };
+
+  const handleResetButton = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent> 
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     form.resetFields();
+    setYear(null);
+    setGenre(null);
   };
 
   //! ======================================================================
@@ -239,9 +266,7 @@ export const App = () => {
                         onFinishFailed={onFinishFailed}
                         autoComplete="off"
                       >
-                        <Form.Item
-                          name="yearFilm"
-                        >
+                        <Form.Item name="yearFilm">
                           <div className='sider__title'>
                             {getTranslation('sider.datepicker.title', lang)}
                           </div>
@@ -254,11 +279,9 @@ export const App = () => {
                           />
                         </Form.Item>
 
-                        <Form.Item
-                          name="genreFilm"
-                        >
+                        <Form.Item name="genreFilm">
                           <div className='sider__title'>
-                            {getTranslation('sider.datepicker.title', lang)}
+                            {getTranslation('sider.select.title', lang)}
                           </div>
                           
                           <Select
@@ -291,6 +314,17 @@ export const App = () => {
                           >
                             {getTranslation('sider.form.button', lang)}
                           </Button>
+
+                          <Button 
+                            className='sider__item'
+                            type="default"
+                            htmlType="reset"
+                            loading={isLoading}
+                            // icon={<SearchOutlined />}
+                            onClick={(e) => handleResetButton(e)}
+                          >
+                            {getTranslation('sider.form.buttonReset', lang)}
+                          </Button>
                         </Form.Item>
                       </Form>
                     </div>
@@ -309,6 +343,8 @@ export const App = () => {
                         genresEn={genresEn}
                         isLoading={isLoading}
                         countFilms={countFilms}
+                        year={titleYear}
+                        genre={titleGenre}
                       />}
                     />
 

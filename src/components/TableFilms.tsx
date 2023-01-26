@@ -197,11 +197,12 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
         <p>Some contents...</p>
       </Modal>
 
-      (modaldata) &&
+      {modaldata &&
       <ModalWindow 
         modaldata={modaldata}
         onIsModalOpen={isModalOpen} 
         onHandleCloseModal={handleCloseModal} />
+      }
     </>
   );
 };

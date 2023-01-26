@@ -45,7 +45,7 @@ export const RandomPage: React.FC<Props> = () => {
       });
   }
 
-  function wait(delay: number) { //to make an illusion of magic selection
+  function wait(delay: number) { // to make an illusion of selection magic :)
     return new Promise(resolve => {
       setTimeout(resolve, delay);
     });
@@ -80,6 +80,7 @@ export const RandomPage: React.FC<Props> = () => {
 
       <Button 
         type="primary"
+        loading={isLoading}
         icon={<QuestionCircleFilled />}
         onClick={(e) => handleClickButton(e, 100)}
       >

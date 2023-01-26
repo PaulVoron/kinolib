@@ -2,7 +2,7 @@ const translation: Record<string, Record<string, string>> = {
   'en-EN': {
     'homePage.title': 'Welcome!',
     'nav.title1': 'Introduction',
-    'nav.title2': 'Top 100 films',
+    'nav.title2': 'Top films',
     'nav.title3': 'Random film',
     'filmPage.title': ' Popular Films',
     'randomPage.title': 'What will we watch today?',
@@ -28,7 +28,7 @@ const translation: Record<string, Record<string, string>> = {
   'uk-UK': {
     'homePage.title': 'Вітаємо!',
     'nav.title1': 'Про сайт',
-    'nav.title2': 'Top 100 фільмів',
+    'nav.title2': 'TOP фільмів',
     'nav.title3': 'Випадковий фільм',
     'filmPage.title': ' Популярних фільмів',
     'randomPage.title': 'Що подивимось сьогодні?',

@@ -7,7 +7,7 @@ import { FilmPage } from './components/FilmPage';
 import { RandomPage } from './components/RandomPage';
 import { Navigation } from './components/Navigation';
 import { LangSelector } from './components/LangSelector';
-import { ConfigProvider, Layout, theme, Button } from 'antd';
+import { ConfigProvider, Layout, theme, Button, Space } from 'antd';
 import { Link } from 'react-router-dom';
 import { getActiveLocation } from './utils/getActiveLocation';
 import TmdbHeaderLogo from './images/tmdbLogo1.svg';
@@ -64,9 +64,13 @@ export const App = () => {
               <Layout className='content__sider' style={{ background: colorBgContainer }}>
                 {activeMenu === '2' &&
                   <Sider style={{ background: colorBgContainer }} width={200}>
-                    <Button>TOP 100 FILMS</Button>
-                    <Button>TOP 250 FILMS</Button>
-                    <Button>TOP 500 FILMS</Button>
+                    <div className='sider'>
+                      <Space direction="vertical">
+                        <Button>TOP 100 FILMS</Button>
+                        <Button>TOP 250 FILMS</Button>
+                        <Button>TOP 500 FILMS</Button>
+                      </Space>
+                    </div>
                   </Sider>
                 }
                 <Content className='content__body'>

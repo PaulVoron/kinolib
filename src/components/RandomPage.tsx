@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { LangContext } from '../utils/LangContext';
 import { getTranslation } from '../utils/getTranslation';
-import { Button } from 'antd';
-import { QuestionCircleTwoTone } from '@ant-design/icons';
+import { Button, Typography } from 'antd';
+import { QuestionCircleFilled } from '@ant-design/icons';
 import { Spinner } from './Spinner';
 import { fetchData } from '../utils/fetchData';
 import { Genre } from '../types/Genre';
@@ -17,60 +17,70 @@ type Props = {
 export const RandomPage: React.FC<Props> = () => {
   const lang = useContext(LangContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [films, setFilms] = useState<Film[]>([]);
+  // const [films, setFilms] = useState<Film[]>([]);
+  const [filmsUk, setFilmsUk] = useState<Film[]>([]);
+  const [filmsEn, setFilmsEn] = useState<Film[]>([]);
   const [filmIndex, setFilmIndex] = useState(0);
-
+  
+  const { Title } = Typography;
+  
   const apiKey = '?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c';
   const limiter = '&include_adult=false&include_video=false';
-  
-  const language = `&language=${lang}`;
-  const filmURL = 'discover/movie' + apiKey + limiter + language;
+  const filmURL = 'discover/movie' + apiKey + limiter;
   const backdropURL = '	https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/';
 
-  function getFilm(url: string, key: string) {    
-    fetchData(url, key)
+  function getFilm(url: string, key: string, lang: string) {
+    const language = `&language=${lang}`;
+    fetchData(url + language, key)
       .then(data => {
         setIsLoading(false);
-        console.log(url);
-        console.log(data);
-        setFilms(data);
+        if (lang === 'uk-UK') {
+          setFilmsUk(data);
+        } else {
+          setFilmsEn(data);
+        }
       })
       .catch(() => {
         setIsLoading(false);
       });
   }
 
-  function wait(delay: number) {
+  function wait(delay: number) { //to make an illusion of magic selection
     return new Promise(resolve => {
       setTimeout(resolve, delay);
     });
   }
+
+
 
   const handleClickButton = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent> 
       | React.MouseEvent<HTMLButtonElement, MouseEvent>, 
     rangeRandom: number = 100
   ) => {
-    setFilms([]);
     const sortByPopularity = '&sort_by=popularity.desc';
     const randomNumber = Math.floor(Math.random() * rangeRandom) + 1;
     const page = Math.ceil(randomNumber / 20);
-    setFilmIndex(randomNumber - (page - 1) * 20 - 1);
     const requestURL = filmURL + sortByPopularity + `&page=${page}`;
     
+    setFilmIndex(randomNumber - (page - 1) * 20 - 1);
+    setFilmsUk([]);
+    setFilmsEn([]);
     setIsLoading(true);
-    wait(700).then(() => getFilm(requestURL, 'results'));
+    wait(700)
+      .then(() => getFilm(requestURL, 'results', 'uk-UK'))
+      .then(() => getFilm(requestURL, 'results', 'en-EN'));
   };
 
   return (
     <>
-      <h1>
+      <Title>
         {getTranslation('randomPage.title', lang)}
-      </h1>
+      </Title>
 
       <Button 
         type="primary"
-        icon={<QuestionCircleTwoTone />}
+        icon={<QuestionCircleFilled />}
         onClick={(e) => handleClickButton(e, 100)}
       >
         {getTranslation('randomButton.text', lang)}
@@ -78,18 +88,25 @@ export const RandomPage: React.FC<Props> = () => {
       
       {isLoading && <Spinner />}
 
-      {films.length !== 0 && 
-        <>
-          <div 
-            className='filmcontainer'
-            style={{backgroundImage: `url(${backdropURL 
-              + films[filmIndex].backdrop_path})`}}
-          >
-            <FilmCard index={filmIndex} film={films[filmIndex]} />
-          </div>
-        </>
+      {filmsUk.length !==0 && (lang === 'uk-UK') &&
+        <div 
+          className='filmcontainer'
+          style={{backgroundImage: `url(${backdropURL 
+            + filmsUk[filmIndex].backdrop_path})`}}
+        >
+          <FilmCard index={filmIndex} film={filmsUk[filmIndex]} />
+        </div>
       }
 
+      {filmsEn.length !==0 && (lang === 'en-EN') &&
+        <div 
+          className='filmcontainer'
+          style={{backgroundImage: `url(${backdropURL 
+            + filmsEn[filmIndex].backdrop_path})`}}
+        >
+          <FilmCard index={filmIndex} film={filmsEn[filmIndex]} />
+        </div>
+      }
     </>
   );
 }

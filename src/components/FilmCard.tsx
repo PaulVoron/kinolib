@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext } from 'react';
+import { useContext } from 'react';
+import { StarFilled} from '@ant-design/icons';
 import { LangContext } from '../utils/LangContext';
 import { getTranslation } from '../utils/getTranslation';
 import { Genre } from '../types/Genre';
 import { Film } from '../types/Film';
-import { Typography } from 'antd';
 import '../App.scss';
 
 type Props = {
@@ -28,13 +28,37 @@ export const FilmCard: React.FC<Props> = ({ index, film }) => {
           alt="poster" />
       </div>
       <div className='filmcard__info'>
-        <h1>{film?.title}</h1>
-        <h4>{getTranslation('card.voteAverage', lang) + ' '} {film?.vote_average}</h4>
-        <h4>{getTranslation('card.genre', lang) + ' '} {film?.genre_ids}</h4>
-        <h4>{getTranslation('card.releaseDate', lang) + ' '} {film?.release_date}</h4>
-        <h4>{getTranslation('card.originalTitle', lang) + ' - '} {film?.original_title}</h4>
-        <h4>{getTranslation('card.voteCount', lang) + ' '} {film?.vote_count}</h4>
-        <h4>{film?.overview}</h4>
+        <div className='filmcard__title'>{film?.title}</div>
+        
+        <div className='filmcard__subtitle'>
+          <StarFilled style={{ color: "gold"}} /> 
+          {' ' + film?.vote_average}
+        </div>
+        
+        <div className='filmcard__votecount'>
+          {getTranslation('card.voteCount', lang) + ' '}
+        {film?.vote_count}</div>
+        
+        <div className='filmcard__text'>
+          {getTranslation('card.releaseDate', lang) + ' '}
+          {film?.release_date}
+        </div>
+        
+        <div className='filmcard__origtitle'>
+          {getTranslation('card.originalTitle', lang) + ' - '}
+          {film?.original_title}
+        </div>
+
+        <div className='filmcard__text'>
+          {getTranslation('card.genre', lang) + ' '} 
+          {film?.genre_ids}
+        </div>
+        
+        <div className='filmcard__line'></div>
+
+        <div className='filmcard__text'>
+          {film?.overview}
+        </div>
       </div>
     </div>
   );

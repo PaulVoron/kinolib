@@ -36,6 +36,10 @@
   }
 }
 
+.sider {
+  padding: 50px 24px;
+}
+
 .footer {
   display: flex;
   align-items: center;
@@ -74,12 +78,38 @@
   margin: auto 50px;
   // justify-content: center;
   color: white;
+  font-weight: bold;
 
   &__poster {
 
   }
 
   &__info {
-    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 24px;
+  }
+
+  &__title {
+    font-size: 42px;
+    font-weight: bold;
+  }
+
+  &__subtitle {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 6px;
+  }
+
+  &__text {
+    margin-top: 16px;
+  }
+
+  &__line {
+    margin-top: 16px;
+    border: 1px solid white;
   }
 }
+
+

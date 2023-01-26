@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { LangContext } from '../utils/LangContext';
 import { getTranslation } from '../utils/getTranslation';
 import { MenuProps, Menu } from 'antd';
-import { QuestionCircleTwoTone, VideoCameraFilled } from '@ant-design/icons';
+import { HomeFilled, QuestionCircleFilled, VideoCameraFilled } from '@ant-design/icons';
 import { getActiveLocation } from '../utils/getActiveLocation';
 
 export const Navigation = () => {
@@ -15,7 +15,7 @@ export const Navigation = () => {
     {
       key: '1', 
       label: (<Link to="/">{getTranslation('nav.title1', lang)}</Link>), 
-      icon: <QuestionCircleTwoTone />
+      icon: <HomeFilled />
     },
     {
       key: '2', 
@@ -25,7 +25,7 @@ export const Navigation = () => {
     {
       key: '3', 
       label: (<Link to="/random_film">{getTranslation('nav.title3', lang)}</Link>), 
-      icon: <QuestionCircleTwoTone />
+      icon: <QuestionCircleFilled />
     }
   ];
 

@@ -1,4 +1,4 @@
-import { StarFilled, StarTwoTone } from '@ant-design/icons';
+import { StarFilled} from '@ant-design/icons';
 import { Modal } from 'antd';
 import React from 'react';
 import { Film } from '../types/Film';

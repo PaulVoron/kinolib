@@ -3,15 +3,20 @@
 }
 .logo {
   white-space:nowrap;
-  padding: 0 42px; 
-  font-size:24px; 
+  padding: 0 22px; 
+  font-size:32px; 
   font-weight: bold;
+  color: #90cea1;
 }
 
 .logo-tmdb {
   display: flex;
   align-items: center;
   margin: 0 20px;
+}
+
+.lang_selector {
+  padding: 0 22px; 
 }
 
 .header {
@@ -22,12 +27,37 @@
   width: 100%;
 }
 
+.main {
+  display: flex;
+  margin-bottom: 50px;
+  
+  &__text-wripper {
+    width: 60%;
+    padding-right: 20px;
+  }
+  
+  &__pic {
+    width: 40%;
+    object-fit: contain;
+  }
+
+  &_text {
+    font-size:26px; 
+    color: #0d253f;
+  }
+  
+  &_button {
+    width: 260px;
+  }
+}
+
+
+
 .content {
   padding: 0 50px;
   background-color: #01b4e4;
 
   &__sider {
-    // padding: 24px 0;
     min-height: calc(100vh - 135px);
   }
   &__body {
@@ -43,7 +73,6 @@
     position: fixed;
     display: flex;
     flex-direction: column;
-    // justify-content: center;
     align-items: center;
     width: 200px;
     margin-top: 52px;
@@ -69,7 +98,6 @@
 
   &__item {
     width: 100%;
-    margin-top: 10px;
   }
 }
 
@@ -77,8 +105,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  // text-align: 'center';
   width: 100%;
+  background-color: #0d253f;
 }
 
 .filmcontainer {
@@ -89,8 +117,6 @@
   width: 100%;
   display: flex;
   margin-top: 20px;
-  // align-items: center;
-  // justify-content: center;
   background-size: cover;
   background-repeat: no-repeat;
 
@@ -109,12 +135,12 @@
   position: relative;
   display: flex;
   margin: auto 50px;
-  // justify-content: center;
   color: white;
   font-weight: bold;
 
   &__poster {
-
+    height: 450px;
+    object-fit: 'contain';
   }
 
   &__info {
@@ -146,4 +172,62 @@
   }
 }
 
+.modal {
+  display: flex;
+  flex-direction: column;
+  color: black;
 
+  &__poster {
+    height: 350px;
+    object-fit: 'contain';
+    margin: auto;
+  }
+
+  &__title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  &__rate {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__subtitle {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 6px;
+  }
+
+  &__hearts {
+    padding-top: 5px;
+    margin-left: 10px;
+  }
+
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__genre {
+    display: flex;
+  }
+
+  &__genre_title {
+    font-weight: bold;
+  }
+
+  &__genre_list {
+    margin-left: 10px;
+    line-height: 26px;
+  }
+}
+
+.spinner-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}

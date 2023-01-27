@@ -1,32 +1,33 @@
-import { StarFilled} from '@ant-design/icons';
-import { Modal } from 'antd';
 import React from 'react';
+import { Modal } from 'antd';
+import { FilmCard } from './FilmCard';
 import { Film } from '../types/Film';
 
 type Props = {
-  modaldata: Film | undefined, 
+  film: Film | undefined, 
   onIsModalOpen: boolean, 
   onHandleCloseModal: any,
 }
 
 export const ModalWindow: React.FC<Props> = (
     {
-      modaldata, 
+      film, 
       onIsModalOpen, 
       onHandleCloseModal
     } 
 ) => {
   return (
-    <Modal 
-      bodyStyle={{}}
-      title={modaldata?.title} 
-      open={onIsModalOpen} 
-      onCancel={onHandleCloseModal}
-      footer={null}
-    >
-       <StarFilled style={{ color: "gold"}} />
-      <p>{modaldata?.overview}</p>
-      <p>Some contents...</p>
-    </Modal>
+    <>
+      {film && (
+        <Modal 
+          bodyStyle={{}}
+          open={onIsModalOpen} 
+          onCancel={onHandleCloseModal}
+          footer={null}
+        >
+          <FilmCard film={film} className={'modal'} />
+        </Modal>
+      )}
+    </>
   );
 };

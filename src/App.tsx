@@ -164,14 +164,12 @@ export const App = () => {
     // console.log('search:', value);
   };
 
-//! ======================================================================
   const handleSubmitButton = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent> 
       | React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     console.log('search year ' + year);
     console.log('search genre ' + genre);
-    // form.resetFields();
     setFilmsUk([]);
     setFilmsEn([]);
     loadFilms(countFilms);
@@ -188,8 +186,6 @@ export const App = () => {
     setGenre(null);
   };
 
-  //! ======================================================================
-  
   useEffect(() => {
     getDataFromApi(genreURL, 'genres', 'uk-UK');
     getDataFromApi(genreURL, 'genres', 'en-EN')
@@ -211,7 +207,7 @@ export const App = () => {
     }}
     >
       <LangContext.Provider value={lang}>
-        <div className="container" style={{height: "100%"}}>
+        <div className="container">
           <Layout>
             <Header className="header">
               <div 
@@ -267,40 +263,44 @@ export const App = () => {
                         autoComplete="off"
                       >
                         <Form.Item name="yearFilm">
-                          <div className='sider__title'>
-                            {getTranslation('sider.datepicker.title', lang)}
-                          </div>
+                          <>
+                            <div className='sider__title'>
+                              {getTranslation('sider.datepicker.title', lang)}
+                            </div>
 
-                          <DatePicker
-                            className='sider__item'
-                            placeholder={getTranslation('sider.year.placeholder', lang)}
-                            onChange={handleDateChange} 
-                            picker="year" 
-                          />
+                            <DatePicker
+                              className='sider__item'
+                              placeholder={getTranslation('sider.year.placeholder', lang)}
+                              onChange={handleDateChange} 
+                              picker="year" 
+                            />
+                          </>
                         </Form.Item>
 
                         <Form.Item name="genreFilm">
-                          <div className='sider__title'>
-                            {getTranslation('sider.select.title', lang)}
-                          </div>
-                          
-                          <Select
-                            className='sider__item'
-                            showSearch
-                            placeholder={getTranslation('sider.select.placeholder', lang)}
-                            optionFilterProp="children"
-                            onChange={handlerSelectGenre}
-                            onSearch={handlerSearchGenre}
-                            filterOption={(input, option) =>
-                              (option?.label ?? '')
-                                .toLowerCase()
-                                .includes(input.toLowerCase())
-                            }
-                            options={(lang === 'uk-UK') 
-                              ? genresOptions(genresUk)
-                              : genresOptions(genresEn)
-                            }
-                          />
+                          <>
+                            <div className='sider__title'>
+                              {getTranslation('sider.select.title', lang)}
+                            </div>
+                            
+                            <Select
+                              className='sider__item'
+                              showSearch
+                              placeholder={getTranslation('sider.select.placeholder', lang)}
+                              optionFilterProp="children"
+                              onChange={handlerSelectGenre}
+                              onSearch={handlerSearchGenre}
+                              filterOption={(input, option) =>
+                                (option?.label ?? '')
+                                  .toLowerCase()
+                                  .includes(input.toLowerCase())
+                              }
+                              options={(lang === 'uk-UK') 
+                                ? genresOptions(genresUk)
+                                : genresOptions(genresEn)
+                              }
+                            />
+                          </>
                         </Form.Item>
 
                         <Form.Item>
@@ -314,7 +314,9 @@ export const App = () => {
                           >
                             {getTranslation('sider.form.button', lang)}
                           </Button>
+                        </Form.Item>
 
+                        <Form.Item>
                           <Button 
                             className='sider__item'
                             type="default"

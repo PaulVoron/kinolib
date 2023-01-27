@@ -1,5 +1,5 @@
 import { Grid } from 'react-loader-spinner';
-import '../styles/Spinner.scss';
+import '../App.scss';
 
 export const Spinner = () => {
   return (

@@ -9,6 +9,7 @@ type Props = {
 export const LangSelector: React.FC<Props> = React.memo(({lang, setLang}) => {
   return (
     <Select
+      className="lang_selector"
       defaultValue={lang}
       style={{ margin:'auto' }}
       onChange={(value) => setLang(value)}

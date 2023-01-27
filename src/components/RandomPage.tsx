@@ -5,29 +5,25 @@ import { Button, Typography } from 'antd';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { Spinner } from './Spinner';
 import { fetchData } from '../utils/fetchData';
-import { Genre } from '../types/Genre';
 import { Film } from '../types/Film';
 import { FilmCard } from '../components/FilmCard';
 import '../App.scss';
 
-type Props = {
-  // setCurrentMenu: React.Dispatch<React.SetStateAction<string>>,
-}
 
-export const RandomPage: React.FC<Props> = () => {
+
+export const RandomPage = () => {
   const lang = useContext(LangContext);
   const [isLoading, setIsLoading] = useState(false);
-  // const [films, setFilms] = useState<Film[]>([]);
   const [filmsUk, setFilmsUk] = useState<Film[]>([]);
   const [filmsEn, setFilmsEn] = useState<Film[]>([]);
   const [filmIndex, setFilmIndex] = useState(0);
-  
+
   const { Title } = Typography;
   
   const apiKey = '?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c';
   const limiter = '&include_adult=false&include_video=false';
   const filmURL = 'discover/movie' + apiKey + limiter;
-  const backdropURL = '	https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/';
+  const backdropURL = 'https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/';
 
   function getFilm(url: string, key: string, lang: string) {
     const language = `&language=${lang}`;
@@ -51,8 +47,6 @@ export const RandomPage: React.FC<Props> = () => {
     });
   }
 
-
-
   const handleClickButton = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent> 
       | React.MouseEvent<HTMLButtonElement, MouseEvent>, 
@@ -67,10 +61,11 @@ export const RandomPage: React.FC<Props> = () => {
     setFilmsUk([]);
     setFilmsEn([]);
     setIsLoading(true);
-    wait(700)
+    wait(1000)
       .then(() => getFilm(requestURL, 'results', 'uk-UK'))
       .then(() => getFilm(requestURL, 'results', 'en-EN'));
   };
+  const films = (lang === 'uk-UK') ? filmsUk : filmsEn;
 
   return (
     <>
@@ -89,23 +84,13 @@ export const RandomPage: React.FC<Props> = () => {
       
       {isLoading && <Spinner />}
 
-      {filmsUk.length !==0 && (lang === 'uk-UK') &&
+      {filmsEn.length !==0 &&
         <div 
           className='filmcontainer'
           style={{backgroundImage: `url(${backdropURL 
-            + filmsUk[filmIndex].backdrop_path})`}}
+            + films[filmIndex].backdrop_path})`}}
         >
-          <FilmCard index={filmIndex} film={filmsUk[filmIndex]} />
-        </div>
-      }
-
-      {filmsEn.length !==0 && (lang === 'en-EN') &&
-        <div 
-          className='filmcontainer'
-          style={{backgroundImage: `url(${backdropURL 
-            + filmsEn[filmIndex].backdrop_path})`}}
-        >
-          <FilmCard index={filmIndex} film={filmsEn[filmIndex]} />
+          <FilmCard film={films[filmIndex]} className={'filmcard'} />
         </div>
       }
     </>

@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Genre } from '../types/Genre';
 import { Film } from '../types/Film';
 import { getTranslation } from '../utils/getTranslation';
-import { Button, Modal, Space, Table, TableProps, Tag  } from 'antd';
+import { Button, Space, Table, TableProps, Tag  } from 'antd';
 import { LangContext } from '../utils/LangContext';
 import { genreColor } from '../utils/genreColor';
 
@@ -19,7 +19,6 @@ type Props = {
 }
 export const TableFilms: React.FC<Props> = ({ genres, films }) => {
   const lang = useContext(LangContext);
-  // const posterURL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2';
   const posterURL = 'https://www.themoviedb.org/t/p/w130_and_h195_bestv2/';
   
   const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
@@ -153,8 +152,6 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
     setIsModalOpen(false);
   };
 
-  console.log('filteredInfo = ' + filteredInfo);
-
   return (
     <>
       <Space style={{ marginBottom: 16 }}>
@@ -186,20 +183,10 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
         }}
         onChange={handleChange}
       />
-      <Modal 
-        bodyStyle={{}}
-        title={modaldata?.title} 
-        open={isModalOpen} 
-        onCancel={handleCloseModal}
-        footer={null}
-      >
-        <p>{modaldata?.overview}</p>
-        <p>Some contents...</p>
-      </Modal>
 
       {modaldata &&
       <ModalWindow 
-        modaldata={modaldata}
+        film={modaldata}
         onIsModalOpen={isModalOpen} 
         onHandleCloseModal={handleCloseModal} />
       }

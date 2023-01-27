@@ -374,9 +374,3 @@ export const App = () => {
 }
 
 export default App;
-
-//*************************************/
-      //! npm add react-countup
-      //! npm i -g npm 
-      //! npm i --save lodash
-//*************************************/

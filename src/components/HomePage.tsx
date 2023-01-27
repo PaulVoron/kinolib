@@ -18,17 +18,17 @@ export const HomePage = () => {
         </Title>
 
         <Space direction="vertical">
-          <Text className='main_text'>
-            Це сайт допоможе тобі підібрати фільм за власними уподобаннями серед найпопулярніших. 
+          <Text className='main__text'>
+            {getTranslation('homePage.text1', lang)}
             <br />
-            Ти можеш переглядати перелік популярних фільмів за окремим жанром, або конкретного року.
+            {getTranslation('homePage.text2', lang)}
             <br />
-            Натискай скоріше!
+            {getTranslation('homePage.text3', lang)}
           </Text>
           
           <Link to="/films">
             <Button 
-              className='main_button'
+              className='main__button'
               type="primary"
               size='large'
               icon={<VideoCameraFilled />}
@@ -37,17 +37,17 @@ export const HomePage = () => {
             </Button>
           </Link>
 
-          <Text className='main_text'>
-            Або дозволь зробити вибір мені!
+          <Text className='main__text'>
+            {getTranslation('homePage.text4', lang)}
             <br />
-            Я сам оберу тобі фільм серед сотні найпопулярніших на даний момент!
+            {getTranslation('homePage.text5', lang)}
             <br />
-            Насолоджуйся!
+            {getTranslation('homePage.text6', lang)}
           </Text>
 
           <Link to="/random_film">
             <Button 
-              className='main_button'
+              className='main__button'
               type="primary"
               size='large'
               icon={<QuestionCircleFilled />}

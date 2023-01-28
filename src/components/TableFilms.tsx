@@ -31,6 +31,7 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
       title: getTranslation('table.poster', lang),
       dataIndex: 'poster_path',
       key: 'poster',
+      align: 'center',
       render: (imgUrl: string) => (
         <div>
           <img 
@@ -43,11 +44,13 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
           />
         </div>
       ),
+      width: '15%',
     },
     {
       title: getTranslation('table.title', lang),
       dataIndex: 'title',
       key: 'title',
+      align: 'center',
       render: (text: string) => 
       <span style={{ fontWeight: 'bold'}}>{text}</span>,
     },
@@ -55,17 +58,20 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
       title: getTranslation('table.year', lang),
       dataIndex: 'release_date',
       key: 'year',
+      align: 'center',
       render: (text: string) => <>{text.substring(0, 4)}</>,
       sorter: (a, b) => Number(a.release_date.substring(0, 4)) 
         - Number(b.release_date.substring(0, 4)),
       sortDirections: ['descend', 'ascend'],
       sortOrder: sortedInfo.columnKey === 'year' ? sortedInfo.order : null,
       ellipsis: true,
+      width: '10%',
     },
     {
       title: getTranslation('table.genres', lang),
       dataIndex: 'genre_ids',
       key: 'genres',
+      align: 'center',
       render: (_: any, { genre_ids }: any) => (
         <>
           {genre_ids.map((genreId: number) => {
@@ -97,33 +103,40 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
       filteredValue: filteredInfo.genres || null,
       onFilter: (value, record) => record.genre_ids.some(item => item === value),
       filterMultiple: false,
+      width: '15%',
     },
     {
       title: getTranslation('table.rating', lang),
       dataIndex: 'vote_average',
       key: 'rating',
+      align: 'center',
       sorter: (a, b) => a.vote_average - b.vote_average,
       sortDirections: ['descend', 'ascend'],
       sortOrder: sortedInfo.columnKey === 'rating' ? sortedInfo.order : null,
       ellipsis: true,
+      width: '10%',
     },
     {
       title: getTranslation('table.count', lang),
       dataIndex: 'vote_count',
       key: 'count',
+      align: 'center',
       sorter: (a, b) => a.vote_count - b.vote_count,
       sortDirections: ['descend', 'ascend'],
       sortOrder: sortedInfo.columnKey === 'count' ? sortedInfo.order : null,
       ellipsis: true,
+      width: '10%',
     },
     {
       title: getTranslation('table.popularity', lang),
       dataIndex: 'popularity',
       key: 'popularity',
+      align: 'center',
       sorter: (a, b) => a.popularity - b.popularity,
       sortDirections: ['descend', 'ascend'],
       sortOrder: sortedInfo.columnKey === 'popularity' ? sortedInfo.order : null,
       ellipsis: true,
+      width: '10%',
     },
   ];
 

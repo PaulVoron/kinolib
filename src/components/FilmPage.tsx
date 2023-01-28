@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { LangContext } from '../utils/LangContext';
 import { getTranslation } from '../utils/getTranslation';
 import { Spinner } from './Spinner';
-import { fetchData } from '../utils/fetchData';
 import { Genre } from '../types/Genre';
 import { Film } from '../types/Film';
 import { 

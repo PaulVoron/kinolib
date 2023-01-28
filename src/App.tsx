@@ -38,16 +38,8 @@ import { getTranslation } from './utils/getTranslation';
 import dayjs from 'dayjs';
 import { Genre } from './types/Genre';
 
-const onFinish = (values: any) => {
-  console.log('Success:', values);
-};
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo);
-};
-
 export const App = () => {
-  const [lang, setLang] = useState('uk-UK'); //en-EN
+  const [lang, setLang] = useState('en-EN'); //uk-UK
   const { Header, Content, Footer, Sider } = Layout;
   const {token: { colorBgContainer }} = theme.useToken();
 
@@ -160,16 +152,10 @@ export const App = () => {
     setGenre(value);
   };
   
-  const handlerSearchGenre = (value: string) => {
-    // console.log('search:', value);
-  };
-
   const handleSubmitButton = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent> 
       | React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    console.log('search year ' + year);
-    console.log('search genre ' + genre);
     setFilmsUk([]);
     setFilmsEn([]);
     loadFilms(countFilms);
@@ -202,7 +188,6 @@ export const App = () => {
         "fontSize": 14,
         "colorPrimary": "#01b4e4",
         "colorSuccess": "#90cea1",
-        // "colorPrimaryBg": "#0d253f"
       },
     }}
     >
@@ -221,7 +206,7 @@ export const App = () => {
 
               <Navigation />
 
-              <div className='logo-tmdb'>
+              <div className='logotmdb'>
                 <img src={TmdbHeaderLogo} height={40} alt="TMDB logo" />
               </div>
 
@@ -258,8 +243,6 @@ export const App = () => {
                       <Form
                         form={form}
                         name="form"
-                        onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
                         autoComplete="off"
                       >
                         <Form.Item name="yearFilm">
@@ -289,7 +272,6 @@ export const App = () => {
                               placeholder={getTranslation('sider.select.placeholder', lang)}
                               optionFilterProp="children"
                               onChange={handlerSelectGenre}
-                              onSearch={handlerSearchGenre}
                               filterOption={(input, option) =>
                                 (option?.label ?? '')
                                   .toLowerCase()
@@ -322,7 +304,6 @@ export const App = () => {
                             type="default"
                             htmlType="reset"
                             loading={isLoading}
-                            // icon={<SearchOutlined />}
                             onClick={(e) => handleResetButton(e)}
                           >
                             {getTranslation('sider.form.buttonReset', lang)}
@@ -359,7 +340,7 @@ export const App = () => {
             <Footer className='footer'>
               React * TypeScript * AntDesign * Axios
               <img 
-                className='logo-tmdb' 
+                className='logotmdb' 
                 src={TmdbFooterLogo} 
                 height={20} 
                 alt="TMDB logo" 

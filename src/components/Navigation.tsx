@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LangContext } from '../utils/LangContext';
 import { getTranslation } from '../utils/getTranslation';

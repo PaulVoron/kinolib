@@ -1,5 +1,6 @@
 const translation: Record<string, Record<string, string>> = {
   'en-EN': {
+    'noFoundPage.title': 'Page not found',
     'homePage.title': 'Welcome!',
     'homePage.text1': 'This site will help you to choose a movie among the most popular according to your own preferences.',
     'homePage.text2': 'You can filter and view the list of popular movies by a specific genre or even a specific year.',
@@ -35,10 +36,11 @@ const translation: Record<string, Record<string, string>> = {
     'table.count': 'Count',
     'table.year': 'Year',
     'table.button.clearFilter': 'Clear filters of table',
-    'table.button.clearAll': 'Clear filters and sorters of table',
+    'table.button.clearAll': 'Clear sorters of table',
     'table.annotation': 'About movie:',
   },
   'uk-UK': {
+    'noFoundPage.title': 'Сторінку не знайдено',
     'homePage.title': 'Вітаю!',
     'homePage.text1': 'Це сайт допоможе тобі підібрати фільм за власними уподобаннями серед найпопулярніших.',
     'homePage.text2': 'Ти можеш фільтрувати та переглядати перелік популярних фільмів за окремим жанром, або навіть конкретного року.',
@@ -74,7 +76,7 @@ const translation: Record<string, Record<string, string>> = {
     'table.count': 'Оцінок',
     'table.year': 'Рік',
     'table.button.clearFilter': 'Скинути фільтри таблиці',
-    'table.button.clearAll': 'Скинути сортування та фільтри таблиці',
+    'table.button.clearAll': 'Скинути сортування таблиці',
     'table.annotation': 'Про фільм:',
   }
 };

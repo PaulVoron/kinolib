@@ -11,3 +11,6 @@ The feature of the random choice can suggest one film among hundreds of popular 
 ## Used tech stack:
 `React`, `TypeScript`, `AntDesign`, `Axios`, `API`, `SCSS` </br>
 Separated Components, React hooks, API-requests etc.
+
+
+ - [DEMO LINK](https://paulvoron.github.io/kinolib/#/films)

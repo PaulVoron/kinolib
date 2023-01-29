@@ -1,357 +1,136 @@
 import './App.scss';
-import { useEffect, useState } from 'react';
-import { 
-  Route, 
-  Routes, 
-  useLocation, 
-  Link 
-} from 'react-router-dom'
-import { 
-  ConfigProvider, 
-  Layout, 
-  theme, 
-  Button, 
-  RadioChangeEvent,
-  Radio,
-  DatePicker,
-  Form,
-  Select
+import { useState } from 'react';
+import {
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router-dom';
+import {
+  ConfigProvider,
+  Layout,
+  theme,
 } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
 
-import { fetchData } from './utils/fetchData';
-import { useLocalStorage } from './utils/useLocalStorage';
-import { getActiveLocation } from './utils/getActiveLocation';
+import { useLocalStorage } from './hooks/useLocalStorage';
 import { LangContext } from './utils/LangContext';
 
-import { LangSelector } from './components/LangSelector';
+import { NotFoundPage } from './components/NotFoundPage';
 import { HomePage } from './components/HomePage';
 import { FilmPage } from './components/FilmPage';
 import { RandomPage } from './components/RandomPage';
-import { Navigation } from './components/Navigation';
-
-import TmdbHeaderLogo from './images/tmdbLogo1.svg';
-import TmdbFooterLogo from './images/tmdbLogo2.svg';
 
 import { Film } from './types/Film';
-import { getTranslation } from './utils/getTranslation';
-import dayjs from 'dayjs';
-import { Genre } from './types/Genre';
+import { useLoadFilms } from './hooks/useLoadFilms';
+import React from 'react';
+import { Header } from './components/Header';
+import { Sider } from './components/Sider';
+import { Footer } from './components/Footer';
+
+
+const genresKeys: { [key: string]: string } = {
+  'en-EN': 'genresEn',
+  'uk-UK': 'genresUk',
+};
 
 export const App = () => {
   const [lang, setLang] = useState('en-EN'); //uk-UK
-  const { Header, Content, Footer, Sider } = Layout;
-  const {token: { colorBgContainer }} = theme.useToken();
-
-  const handleClickLogo = () => { activeMenu = '1' };
+  const { Content } = Layout;
 
   const location = useLocation();
-  let activeMenu = getActiveLocation(location.pathname);
+  const showSider = location.pathname === '/films';
 
-  const [filmsUk, setFilmsUk] = useState<Film[]>([]);
-  const [filmsEn, setFilmsEn] = useState<Film[]>([]);
-  const [genresUk, setGenresUk] = useLocalStorage("genresUk", []);
-  const [genresEn, setGenresEn] = useLocalStorage("genresEn", []);
-  const [isLoading, setIsLoading] = useState(false);
+  const [films, setFilms] = useState<Film[]>([]);
+  const [genres, setGenres] = useLocalStorage(genresKeys[lang], []);
+
   const [countFilms, setCountFilms] = useState(100);
   const [year, setYear] = useState<number | null>(null);
   const [genre, setGenre] = useState<number | null>(null);
   const [titleYear, setTitleYear] = useState<number | null>(null);
   const [titleGenre, setTitleGenre] = useState<number | null>(null);
 
-  const [form] = Form.useForm();
+  const { isLoading, loadFilms } = useLoadFilms({
+    countFilms,
+    genre,
+    setFilms,
+    setGenres,
+    year,
+    lang,
+  });
 
-  const apiKey = '?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c';
-  const limiter = '&include_adult=false&include_video=false';
-  const genreURL = `genre/movie/list${apiKey}`;
-  const optionYearURL = '&primary_release_year=';
-  const optionGenreURL = '&with_genres=';
-  const defaultSort = '&sort_by=popularity.desc';
-  const filmURL = `discover/movie${apiKey}${limiter}${defaultSort}`;
-  
-  let filmsToTableUk: Film[] = [];
-  let filmsToTableEn: Film[] = [];
+  const {token: { colorBgContainer }} = theme.useToken();
 
-  async function getDataFromApi(url: string, key: string, lang: string) {
-    setIsLoading(true);
-    fetchData(url + '&language=' + lang, key)
-      .then(data => {
-        setIsLoading(false);
-        if (key === 'genres' && lang === 'uk-UK') {
-          setGenresUk(data);
-        } else if (key === 'genres') {
-          setGenresEn(data);
-        }
-        if (key === 'results' && lang === 'uk-UK') {
-          setFilmsUk((current) => current.concat(data));
-        } else if (key === 'results') {
-          setFilmsEn((current) => current.concat(data));
-        }
-      })
-      .catch(() => {
-        setIsLoading(false);
-      }
-    );
-  }
+  let filmsToTable: Film[] = [];
 
-  async function loadFilms(num: number = 100) {
-    const pagesQuantity = num / 20 + 1;
-    const addGenre = (genre) ? optionGenreURL + genre : '';
-    const addYear = (year) ? optionYearURL + year : '';
-    const complexURL = filmURL + addGenre + addYear;
-
-    for (let i = 1; i < pagesQuantity; i++) {
-      await getDataFromApi(`${complexURL}&page=${i}`, 'results', 'uk-UK');
-      await getDataFromApi(`${complexURL}&page=${i}`, 'results', 'en-EN');
-    }
-  }
-  
-  function copySortMakeUniq (arr: Film[]) {
-    const newArr = arr.sort((a: Film, b: Film) => a.id - b.id)
-    .reduce((arr: Film[], el: Film) => {
-      if(!arr.length || arr[arr.length - 1].id !== el.id) {
-        arr.push(el);
-      }
-      return arr;
-    }, []);
-    
-    return newArr.sort((a: Film, b: Film) => b.popularity - a.popularity);
-  }
-  
-  const options = [
-    { label: '100', value: 100 },
-    { label: '300', value: 300 },
-    { label: '500', value: 500 },
-  ];
-
-  const handleRadioButton = ({ target: { value } }: RadioChangeEvent) => {
-    setFilmsUk([]);
-    setFilmsEn([]);
-    setCountFilms(value);
-    loadFilms(value);
-    setTitleYear(null);
-    setTitleGenre(null);
-  };
-
-  const genresOptions = (genres: Genre[]) => {
-    const options = genres.map(genre => {
-      const option: any = {};
-      option.value = genre.id;
-      option.label = genre.name;
-      return option;
-    });
-
-    return options;
-  };
-
-  const handleDateChange = (value: dayjs.Dayjs | null): void => {
-    value && setYear(value.get('year'));
-  }
-
-  const handlerSelectGenre = (value: number) => {
-    setGenre(value);
-  };
-  
-  const handleSubmitButton = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent> 
-      | React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    setFilmsUk([]);
-    setFilmsEn([]);
-    loadFilms(countFilms);
-    setTitleYear(year);
-    setTitleGenre(genre);
-  };
-
-  const handleResetButton = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent> 
-      | React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    form.resetFields();
-    setYear(null);
-    setGenre(null);
-  };
-
-  useEffect(() => {
-    getDataFromApi(genreURL, 'genres', 'uk-UK');
-    getDataFromApi(genreURL, 'genres', 'en-EN')
-    loadFilms(countFilms);
-  }, []);
-    
-  filmsToTableUk = copySortMakeUniq(filmsUk);
-  filmsToTableEn = copySortMakeUniq(filmsEn);
+  filmsToTable = films;
 
   return (
     <ConfigProvider
-    theme={{
-      token: {
-        "fontSize": 14,
-        "colorPrimary": "#01b4e4",
-        "colorSuccess": "#90cea1",
-      },
-    }}
+      theme={{
+        token: {
+          fontSize: 14,
+          colorPrimary: '#01b4e4',
+          colorSuccess: '#90cea1',
+        },
+      }}
     >
       <LangContext.Provider value={lang}>
         <div className="container">
           <Layout>
-            <Header className="header">
-              <div 
-                className="logo" 
-                onClick={handleClickLogo}
-              >
-                <Link to="/" style={{color: "#90cea1"}}>
-                  TOP-FILMS
-                </Link>
-              </div>
-
-              <Navigation />
-
-              <div className='logotmdb'>
-                <img src={TmdbHeaderLogo} height={40} alt="TMDB logo" />
-              </div>
-
-              <LangSelector lang={lang} setLang={setLang} />
-            </Header>
-
-            <Content className='content'>
+            <Header lang={lang} setLang={setLang} />
+  
+            <Content className="content">
               <Layout
-                className='content__sider' 
+                className="content__sider"
                 style={{ background: colorBgContainer }}
               >
-                {activeMenu === '2' &&
+                {showSider && 
                   <Sider 
-                    className='sider'
-                    style={{ background: colorBgContainer }} 
-                    width={200}
-                  >
-                    <div className='sider__container'>
-                      <div className='sider__title'>
-                        {getTranslation('sider.radio.title', lang)}
-                      </div>
+                    lang={lang} 
+                    isLoading={isLoading} 
+                    genres={genres}
+                    countFilms={countFilms}
+                    year={year}
+                    genre={genre}
+                    setFilms={setFilms}
+                    setCountFilms={setCountFilms}
+                    setYear={setYear}
+                    setGenre={setGenre}
+                    setTitleYear={setTitleYear}
+                    setTitleGenre={setTitleGenre}
+                    loadFilms={loadFilms}
+                  />}
 
-                      <Radio.Group
-                        className='sider__radio'
-                        options={options}
-                        onChange={handleRadioButton}
-                        value={countFilms}
-                        optionType="button"
-                        buttonStyle="solid"
-                      />
-
-                      <div className='sider__divider'></div>
-
-                      <Form
-                        form={form}
-                        name="form"
-                        autoComplete="off"
-                      >
-                        <Form.Item name="yearFilm">
-                          <>
-                            <div className='sider__title'>
-                              {getTranslation('sider.datepicker.title', lang)}
-                            </div>
-
-                            <DatePicker
-                              className='sider__item'
-                              placeholder={getTranslation('sider.year.placeholder', lang)}
-                              onChange={handleDateChange} 
-                              picker="year" 
-                            />
-                          </>
-                        </Form.Item>
-
-                        <Form.Item name="genreFilm">
-                          <>
-                            <div className='sider__title'>
-                              {getTranslation('sider.select.title', lang)}
-                            </div>
-                            
-                            <Select
-                              className='sider__item'
-                              showSearch
-                              placeholder={getTranslation('sider.select.placeholder', lang)}
-                              optionFilterProp="children"
-                              onChange={handlerSelectGenre}
-                              filterOption={(input, option) =>
-                                (option?.label ?? '')
-                                  .toLowerCase()
-                                  .includes(input.toLowerCase())
-                              }
-                              options={(lang === 'uk-UK') 
-                                ? genresOptions(genresUk)
-                                : genresOptions(genresEn)
-                              }
-                            />
-                          </>
-                        </Form.Item>
-
-                        <Form.Item>
-                          <Button 
-                            className='sider__item'
-                            type="primary"
-                            htmlType="submit"
-                            loading={isLoading}
-                            icon={<SearchOutlined />}
-                            onClick={(e) => handleSubmitButton(e)}
-                          >
-                            {getTranslation('sider.form.button', lang)}
-                          </Button>
-                        </Form.Item>
-
-                        <Form.Item>
-                          <Button 
-                            className='sider__item'
-                            type="default"
-                            htmlType="reset"
-                            loading={isLoading}
-                            onClick={(e) => handleResetButton(e)}
-                          >
-                            {getTranslation('sider.form.buttonReset', lang)}
-                          </Button>
-                        </Form.Item>
-                      </Form>
-                    </div>
-                  </Sider>
-                }
-                <Content className='content__body'>
+                <Content className="content__body"
+                  style={{ background: colorBgContainer, zIndex: 1 }}>
                   <Routes>
-                    <Route path="/" element={<HomePage />}/>
+                    <Route path="/" element={<HomePage />} />
 
-                    <Route 
-                      path="/films" 
-                      element={ <FilmPage 
-                        filmsToTableUk={filmsToTableUk}
-                        filmsToTableEn={filmsToTableEn}
-                        genresUk={genresUk}
-                        genresEn={genresEn}
-                        isLoading={isLoading}
-                        countFilms={countFilms}
-                        year={titleYear}
-                        genre={titleGenre}
-                      />}
+                    <Route
+                      path="/films"
+                      element={
+                        <FilmPage
+                          filmsToTable={filmsToTable}
+                          genres={genres}
+                          isLoading={isLoading}
+                          countFilms={countFilms}
+                          year={titleYear}
+                          genre={titleGenre}
+                        />
+                      }
                     />
 
-                    <Route path="/random_film" element={ <RandomPage />}/>
+                    <Route path="/random_film" element={<RandomPage />} />
+
+                    <Route path="*" element={<NotFoundPage />} />
                   </Routes>
                 </Content>
               </Layout>
             </Content>
 
-            <Footer className='footer'>
-              React * TypeScript * AntDesign * Axios
-              <img 
-                className='logotmdb' 
-                src={TmdbFooterLogo} 
-                height={20} 
-                alt="TMDB logo" 
-              />
-              TheMovieDB API - 2023 - Created by Paul Voronin
-            </Footer>
+            <Footer />
           </Layout>
         </div>
       </LangContext.Provider>
     </ConfigProvider>
   );
-}
-
-export default App;
+};

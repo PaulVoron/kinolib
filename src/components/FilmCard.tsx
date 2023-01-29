@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Rate, Tag } from 'antd';
 import { HeartFilled, StarFilled} from '@ant-design/icons';
 import { LangContext } from '../utils/LangContext';
@@ -6,19 +6,31 @@ import { getTranslation } from '../utils/getTranslation';
 import { Film } from '../types/Film';
 import { genreColor } from '../utils/genreColor';
 import '../App.scss';
-import { getGenres } from '../utils/getGenres';
+import { Genre } from '../types/Genre';
+import { fetchData } from '../utils/fetchData';
+import { genreURL, posterURL } from '../utils/filmUrlSettings';
 
 type Props = {
   film: Film | null,
   className: string,
 }
 
-const posterURL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2';
-
 export const FilmCard: React.FC<Props> = ({ film, className }) => {
   const lang = useContext(LangContext);
-  const genresUk = getGenres("genresUk");
-  const genresEn = getGenres("genresEn");
+  const [genres, setGenres] = useState<Genre[]>([]);
+  
+  async function getGenres(lang: string) {
+    try {
+      const data = await fetchData(genreURL + '&language=' + lang, 'genres');
+      setGenres(data);
+    } catch {
+      setGenres([]);
+    }
+  }
+  
+  useEffect(() => {
+    getGenres(lang);
+  }, [lang]);
 
   return (
     <>
@@ -75,13 +87,14 @@ export const FilmCard: React.FC<Props> = ({ film, className }) => {
                 {film.genre_ids.map((genreId: number) => {
                   let genre = '';
 
-                    const genres = (lang === 'uk-UK') ? genresUk : genresEn;
+                  if (genres) {
                     for (let i = 0; i < genres.length; i++) {
                       if (genres[i].id === genreId) {
                         genre = genres[i].name;
                         break;
                       }
                     }
+                  }
 
                   let color = genreColor.find(elem => elem.id === genreId)?.color;
 

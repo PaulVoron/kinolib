@@ -11,7 +11,6 @@ import {
   theme,
 } from 'antd';
 
-import { useLocalStorage } from './hooks/useLocalStorage';
 import { LangContext } from './utils/LangContext';
 
 import { NotFoundPage } from './components/NotFoundPage';
@@ -21,16 +20,11 @@ import { RandomPage } from './components/RandomPage';
 
 import { Film } from './types/Film';
 import { useLoadFilms } from './hooks/useLoadFilms';
-import React from 'react';
 import { Header } from './components/Header';
 import { Sider } from './components/Sider';
 import { Footer } from './components/Footer';
-
-
-const genresKeys: { [key: string]: string } = {
-  'en-EN': 'genresEn',
-  'uk-UK': 'genresUk',
-};
+import { Genre } from './types/Genre';
+import { colorPrimary, colorSuccess } from './utils/colorSettings';
 
 export const App = () => {
   const [lang, setLang] = useState('en-EN'); //uk-UK
@@ -40,8 +34,7 @@ export const App = () => {
   const showSider = location.pathname === '/films';
 
   const [films, setFilms] = useState<Film[]>([]);
-  const [genres, setGenres] = useLocalStorage(genresKeys[lang], []);
-
+  const [genres, setGenres] = useState<Genre[]>([]);
   const [countFilms, setCountFilms] = useState(100);
   const [year, setYear] = useState<number | null>(null);
   const [genre, setGenre] = useState<number | null>(null);
@@ -59,17 +52,13 @@ export const App = () => {
 
   const {token: { colorBgContainer }} = theme.useToken();
 
-  let filmsToTable: Film[] = [];
-
-  filmsToTable = films;
-
   return (
     <ConfigProvider
       theme={{
         token: {
           fontSize: 14,
-          colorPrimary: '#01b4e4',
-          colorSuccess: '#90cea1',
+          colorPrimary: colorPrimary,
+          colorSuccess: colorSuccess,
         },
       }}
     >
@@ -109,7 +98,7 @@ export const App = () => {
                       path="/films"
                       element={
                         <FilmPage
-                          filmsToTable={filmsToTable}
+                          films={films}
                           genres={genres}
                           isLoading={isLoading}
                           countFilms={countFilms}

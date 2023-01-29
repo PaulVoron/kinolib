@@ -91,7 +91,11 @@ export const useFilmColumns = ({
               let color = genreColor.find(elem => elem.id === genreId)?.color;
 
               return (
-                <Tag color={color} key={genreId}>
+                <Tag 
+                  color={color} 
+                  key={genreId}
+                  style={{margin: '2px'}}
+                  >
                   {genre.toUpperCase()}
                 </Tag>
               );

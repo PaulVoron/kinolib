@@ -4,13 +4,19 @@ import { getTranslation } from '../utils/getTranslation';
 import { Spinner } from './Spinner';
 import { Genre } from '../types/Genre';
 import { Film } from '../types/Film';
-import { Typography, Row, Col, FloatButton } from 'antd';
+import { 
+  Typography, 
+  Row, 
+  Col, 
+  FloatButton 
+} from 'antd';
 import { TableFilms } from './TableFilms';
+import { colorPrimary } from '../utils/colorSettings';
 
 const { Title } = Typography;
 
 type Props = {
-  filmsToTable: Film[];
+  films: Film[];
   genres: Genre[];
   isLoading: boolean;
   countFilms: number;
@@ -19,57 +25,54 @@ type Props = {
 };
 
 export const FilmPage: React.FC<Props> = React.memo(
-  ({ filmsToTable, genres, isLoading, countFilms, year, genre }) => {
+  ({ 
+    films, 
+    genres, 
+    isLoading, 
+    countFilms, 
+    year, 
+    genre 
+  }) => {
     const lang = useContext(LangContext);
     const targetGenre = genres.find(item => item.id === genre)?.name;
+    // const [filmsToTable, setFilmsToTable] = useState<Film[]>(films);
 
     return (
       <div>
-        <Title>
-          <>
+        <Title 
+          level={2} 
+        >
+          <div className='filmapage__title'>
             TOP
-            <span style={{ color: '#01b4e4' }}> {countFilms} </span>
+            <span style={{ color: colorPrimary }}> {countFilms}</span>
             {getTranslation('filmPage.title', lang)}
-            {year && lang === 'uk-UK' ? (
-              <>
-                <span style={{ color: '#01b4e4' }}> {year}</span> року
-              </>
-            ) : (
-              ''
-            )}
-            {year && lang === 'en-EN' ? (
-              <>
-                {' '}
-                of
-                <span style={{ color: '#01b4e4' }}> {year}</span>
-              </>
-            ) : (
-              ''
-            )}
-            {genre && lang === 'uk-UK' ? (
-              <>
-                <br /> Жанр:
-                <span style={{ color: '#01b4e4' }}> {targetGenre}</span>
-              </>
-            ) : (
-              ''
-            )}
-            {genre && lang === 'en-EN' ? (
-              <>
-                <br /> Genre:
-                <span style={{ color: '#01b4e4' }}> {targetGenre}</span>
-              </>
-            ) : (
-              ''
-            )}
-          </>
+          </div>
+        </Title>
+        
+        <Title 
+          level={3}
+          style={{ marginTop: "-8px" }}
+        >
+          {year && (
+            <>
+              {getTranslation('filmPage.year', lang)}
+              <span style={{ color: colorPrimary }}> {year}</span>
+            </>
+          )}
+
+          {genre && (
+            <>
+              {getTranslation('filmPage.genre', lang)}
+              <span style={{ color: colorPrimary }}> {targetGenre}</span>
+            </>
+          )}
         </Title>
 
         {isLoading && <Spinner />}
 
         <Row>
           <Col xs={24} md={24}>
-            <TableFilms genres={genres} films={filmsToTable} />
+            <TableFilms genres={genres} films={films} />
           </Col>
         </Row>
 

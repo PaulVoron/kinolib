@@ -8,6 +8,7 @@ import { fetchData } from '../utils/fetchData';
 import { Film } from '../types/Film';
 import { FilmCard } from '../components/FilmCard';
 import '../App.scss';
+import { backdropURL, filmURL } from '../utils/filmUrlSettings';
 
 export const RandomPage = () => {
   const lang = useContext(LangContext);
@@ -18,15 +19,9 @@ export const RandomPage = () => {
 
   const { Title } = Typography;
 
-  const apiKey = '?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c';
-  const limiter = '&include_adult=false&include_video=false';
-  const filmURL = 'discover/movie' + apiKey + limiter;
-  const backdropURL =
-    'https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/';
-
-  function getFilm(url: string, key: string, lang: string) {
+  function getFilm(url: string, lang: string) {
     const language = `&language=${lang}`;
-    fetchData(url + language, key)
+    fetchData(url + language, 'results')
       .then(data => {
         setFilms(data);
       })
@@ -35,8 +30,7 @@ export const RandomPage = () => {
       });
   }
 
-  function wait(delay: number) {
-    // to make an illusion of selection magic 😅
+  function wait(delay: number) { // to make an illusion of selection magic 😅
     return new Promise(resolve => {
       setTimeout(resolve, delay);
     });
@@ -57,15 +51,14 @@ export const RandomPage = () => {
     setFilmIndex(randomNumber - (page - 1) * 20 - 1);
     setFilms([]);
     setIsLoading(true);
-    wait(1000).then(() => getFilm(requestURL, 'results', lang));
+    wait(1000).then(() => getFilm(requestURL, lang));
   };
 
   useEffect(() => {
     if (!requestUrl) {
       return;
     }
-
-    getFilm(requestUrl, 'results', lang);
+    getFilm(requestUrl, lang);
   }, [lang, requestUrl]);
 
   return (

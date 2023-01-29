@@ -2,12 +2,18 @@ import React, { useContext, useState } from 'react';
 import { Genre } from '../types/Genre';
 import { Film } from '../types/Film';
 import { getTranslation } from '../utils/getTranslation';
-import { Button, Space, Table, TableProps } from 'antd';
+import { 
+  Button, 
+  Space, 
+  Table, 
+  TableProps 
+} from 'antd';
 import { LangContext } from '../utils/LangContext';
 
 import type { FilterValue, SorterResult } from 'antd/es/table/interface';
 import { ModalWindow } from './ModalWindow';
 import { useFilmColumns } from '../hooks/useColumns';
+import { posterLargeURL } from '../utils/filmUrlSettings';
 
 type Props = {
   genres: Genre[];
@@ -15,7 +21,6 @@ type Props = {
 };
 export const TableFilms: React.FC<Props> = ({ genres, films }) => {
   const lang = useContext(LangContext);
-  const posterURL = 'https://www.themoviedb.org/t/p/w130_and_h195_bestv2/';
 
   const [filteredInfo, setFilteredInfo] = useState<
     Record<string, FilterValue | null>
@@ -25,7 +30,7 @@ export const TableFilms: React.FC<Props> = ({ genres, films }) => {
   const [modaldata, setmodaldata] = useState<Film | undefined>();
 
   const columns = useFilmColumns({
-    posterURL,
+    posterURL: posterLargeURL,
     sortedInfo,
     genres,
     filteredInfo,

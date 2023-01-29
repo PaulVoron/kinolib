@@ -1,7 +1,10 @@
-export const apiKey = '?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c';
-export const limiter = '&include_adult=false&include_video=false';
+const apiKey = '?api_key=a912f6cd4d0573f728f2dba5b8aa1f6c';
+const limiter = '&include_adult=false&include_video=false';
+const defaultSort = '&sort_by=popularity.desc';
 export const genreURL = `genre/movie/list${apiKey}`;
 export const optionYearURL = '&primary_release_year=';
 export const optionGenreURL = '&with_genres=';
-export const defaultSort = '&sort_by=popularity.desc';
 export const filmURL = `discover/movie${apiKey}${limiter}${defaultSort}`;
+export const posterURL = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2';
+export const posterLargeURL = 'https://www.themoviedb.org/t/p/w130_and_h195_bestv2/';
+export const backdropURL = 'https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/';

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Navigation } from './Navigation';
 import TmdbHeaderLogo from '../images/tmdbLogo1.svg';
 import { Layout, Select } from 'antd';
+import { colorSuccess } from '../utils/colorSettings';
 
 type Props = {
   lang: string,
@@ -21,7 +22,7 @@ export const Header: React.FC<Props> = ({ lang, setLang }) =>{
   return (
   <Header className="header">
     <div className="logo" onClick={handleClickLogo}>
-      <Link to="/" style={{ color: '#90cea1' }}>
+      <Link to="/" style={{ color: colorSuccess }}>
         TOP-FILMS
       </Link>
     </div>

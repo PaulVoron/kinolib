@@ -8,7 +8,6 @@ import {
   Radio, 
   RadioChangeEvent, 
   Select, 
-  theme 
 } from 'antd';
 import { useCallback, useState } from 'react';
 import { Genre } from '../types/Genre';
@@ -57,13 +56,13 @@ export const Sider: React.FC<Props> = ({
 }) => {
   const { Sider } = Layout;
   const [collapsed, setCollapsed] = useState(false);
+  const [isUpdBtnDisabled, setIsUpdBtnDisabled] = useState<boolean>(true);
   const [form] = Form.useForm();
-  const {token: { colorBgContainer }} = theme.useToken();
   
   const handleRadioButton = useCallback(
     ({ target: { value } }: RadioChangeEvent) => {
-      setFilms([]);
       setCountFilms(value);
+      setFilms([]);
       loadFilms(value);
       setTitleYear(null);
       setTitleGenre(null);
@@ -71,14 +70,29 @@ export const Sider: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [loadFilms]
     );
+
+  const handleUpdateButton = useCallback(
+    (e:
+        | React.MouseEvent<HTMLAnchorElement, MouseEvent>
+        | React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      setFilms([]);
+      loadFilms(countFilms);
+      setTitleYear(null);
+      setTitleGenre(null);
+      setIsUpdBtnDisabled(true);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [loadFilms]
+    );
     
     const handleDateChange = useCallback((value: dayjs.Dayjs | null): void => {
       value && setYear(value.get('year'));
-    }, []);
+    }, [setYear]);
 
   const handlerSelectGenre = useCallback((value: number) => {
     setGenre(value);
-  }, []);
+  }, [setGenre]);
 
   const handleSubmitButton = (
     e:
@@ -96,9 +110,14 @@ export const Sider: React.FC<Props> = ({
       | React.MouseEvent<HTMLAnchorElement, MouseEvent>
       | React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
+    setIsUpdBtnDisabled(false);
     form.resetFields();
     setYear(null);
     setGenre(null);
+    setTitleYear(null);
+    setTitleGenre(null);
+    setFilms([]);
+    loadFilms(countFilms);
   };
 
   return (
@@ -197,6 +216,18 @@ export const Sider: React.FC<Props> = ({
               {getTranslation('sider.form.buttonReset', lang)}
             </Button>
           </Form.Item>
+          
+          <div className="sider__divider"></div>
+
+          <Button
+            className="sider__item"
+            type="primary"
+            htmlType="submit"
+            onClick={e => handleUpdateButton(e)}
+            disabled={isUpdBtnDisabled}
+          >
+            {getTranslation('sider.form.buttonApply', lang)}
+          </Button>
         </Form>
       </div>
     </Sider>

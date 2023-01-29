@@ -19,6 +19,10 @@
   padding: 0 22px; 
 }
 
+.container {
+  display: flex;
+}
+
 .header {
   display:flex; 
   position: sticky;
@@ -87,11 +91,12 @@
   &__divider {
     width: 100%;
     border-bottom: 2px solid #dddddd;
+    margin-top: 20px;
     margin-bottom: 20px;
   }
 
   &__title {
-    margin: 20px 0 10px 8px;
+    margin: -10px 0 10px 8px;
     text-align: center;
     font-size: 16px;
     font-weight: bold;
@@ -100,6 +105,12 @@
 
   &__item {
     width: 100%;
+  }
+
+  &__checkbox {
+    font-size: 14px;
+    color: white;
+    margin-bottom: 4px;
   }
 }
 

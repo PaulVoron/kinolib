@@ -9,11 +9,14 @@ import {
   optionYearURL,
 } from '../utils/filmUrlSettings';
 
-interface Params {
-  setGenres(genres: Genre[]): void;
-  setFilms(films: Film[]): void;
+interface Options {
   genre: number | null;
   year: number | null;
+}
+
+interface Params extends Options {
+  setGenres(genres: Genre[]): void;
+  setFilms(films: Film[]): void;
   countFilms: number;
   lang: string;
 }
@@ -48,10 +51,13 @@ export const useLoadFilms = ({
     }
   }
 
-  async function loadFilms(num: number = 100) {
+  async function loadFilms(
+    num: number = 100,
+    options: Options = { genre, year }
+  ) {
     const pagesQuantity = num / 20 + 1;
-    const addGenre = genre ? optionGenreURL + genre : '';
-    const addYear = year ? optionYearURL + year : '';
+    const addGenre = options.genre ? optionGenreURL + options.genre : '';
+    const addYear = options.year ? optionYearURL + options.year : '';
     const complexURL = filmURL + addGenre + addYear;
 
     const filmsList = [];
@@ -72,7 +78,7 @@ export const useLoadFilms = ({
   useEffect(() => {
     getDataFromApi(genreURL, 'genres', lang);
     loadFilms(countFilms);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
   return { isLoading, loadFilms };

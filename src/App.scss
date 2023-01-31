@@ -17,7 +17,8 @@
 }
 
 .lang_selector {
-  padding: 0 16px 0 16px; 
+  margin: 0 16px 0 16px; 
+  width: 150px;
 }
 
 .container {
@@ -252,7 +253,7 @@
 }
 
 .spinner-wrapper {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

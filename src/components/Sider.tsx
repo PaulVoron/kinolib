@@ -1,22 +1,21 @@
 import { SearchOutlined } from '@ant-design/icons';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import dayjs from 'dayjs';
-import { 
-  Button, 
-  Checkbox, 
-  DatePicker, 
-  Input, 
-  Layout, 
-  Radio, 
-  RadioChangeEvent, 
-  Select, 
+import {
+  Button,
+  Checkbox,
+  DatePicker,
+  Input,
+  Layout,
+  Radio,
+  RadioChangeEvent,
+  Select,
 } from 'antd';
 import { useState } from 'react';
 import { Genre } from '../types/Genre';
 import { genresOptions } from '../utils/genresOptions';
 import { getTranslation } from '../utils/getTranslation';
 import { Film } from '../types/Film';
-
 import classNames from 'classnames';
 
 const options = [
@@ -26,28 +25,31 @@ const options = [
 ];
 
 type Props = {
-  lang: string,
+  lang: string;
   isLoading: boolean;
-  genres: Genre[],
-  countFilms: number,
-  year: number | null,
-  genre: number | null,
-  films: Film[],
-  setFoundFilms: React.Dispatch<React.SetStateAction<Film[]>>,
-  setCountFilms: React.Dispatch<React.SetStateAction<number>>,
-  setTitleCountFilms: React.Dispatch<React.SetStateAction<number>>,
-  setYear: React.Dispatch<React.SetStateAction<number | null>>,
-  setGenre: React.Dispatch<React.SetStateAction<number | null>>,
-  setTitleYear: React.Dispatch<React.SetStateAction<number | null>>,
-  setTitleGenre: React.Dispatch<React.SetStateAction<number | null>>,
-  loadFilms: (num?: number) => Promise<void>,
+  genres: Genre[];
+  countFilms: number;
+  year: number | null;
+  genre: number | null;
+  films: Film[];
+  setFoundFilms: React.Dispatch<React.SetStateAction<Film[]>>;
+  setCountFilms: React.Dispatch<React.SetStateAction<number>>;
+  setTitleCountFilms: React.Dispatch<React.SetStateAction<number>>;
+  setYear: React.Dispatch<React.SetStateAction<number | null>>;
+  setGenre: React.Dispatch<React.SetStateAction<number | null>>;
+  setTitleYear: React.Dispatch<React.SetStateAction<number | null>>;
+  setTitleGenre: React.Dispatch<React.SetStateAction<number | null>>;
+  loadFilms: (
+    num?: number,
+    options?: { genre: number | null; year: number | null }
+  ) => Promise<void>;
   setIsInSearch: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const Sider: React.FC<Props> = ({ 
-  lang, 
-  isLoading, 
-  genres, 
+export const Sider: React.FC<Props> = ({
+  lang,
+  isLoading,
+  genres,
   countFilms,
   year,
   genre,
@@ -67,14 +69,13 @@ export const Sider: React.FC<Props> = ({
   const [isChecked, setIsChecked] = useState(false);
   const { Search } = Input;
   const [inputSearchValue, setInputSearchValue] = useState('');
-  const [inputYearValue, setInputYearValue] = useState<dayjs.Dayjs | null>(null);
+  const [inputYearValue, setInputYearValue] = useState<dayjs.Dayjs | null>(
+    null
+  );
   const [inputGenreValue, setInputGenreValue] = useState<number | null>(null);
 
   const handleRadioButton = ({ target: { value } }: RadioChangeEvent) => {
     setCountFilms(value);
-    // setTitleYear(null);
-    // setTitleGenre(null);
-    // loadFilms(value);
   };
 
   const handleYearChange = (value: dayjs.Dayjs | null): void => {
@@ -107,12 +108,10 @@ export const Sider: React.FC<Props> = ({
     setGenre(null);
     setTitleYear(null);
     setTitleGenre(null);
-    setCountFilms(100);
-    setTitleCountFilms(100);
     setInputYearValue(null);
     setInputGenreValue(null);
     setInputSearchValue('');
-    loadFilms(countFilms);
+    loadFilms(countFilms, { genre: null, year: null });
   };
 
   const onCheckboxChange = (e: CheckboxChangeEvent) => {
@@ -121,39 +120,37 @@ export const Sider: React.FC<Props> = ({
 
   const onSearch = (value: string) => {
     if (value === '') {
-      setIsInSearch(false)
+      setIsInSearch(false);
       loadFilms(countFilms);
     } else {
       setIsInSearch(true);
       searchFilm(value);
     }
-  }
+  };
 
   const searchFilm = (searchText: string) => {
-    const searchPrm = (isChecked) ? 'overview' : 'title';
+    const searchPrm = isChecked ? 'overview' : 'title';
 
     const filteredFilms = [...films].filter(
-      film => (
+      film =>
         film[searchPrm].toLowerCase().indexOf(searchText.toLowerCase()) !== -1
-      )
     );
-    
+
     setFoundFilms(filteredFilms);
-  }
+  };
 
   return (
     <Sider
       className="sider"
       width={200}
-      collapsible 
-      collapsed={isCollapsed} 
-      onCollapse={(value) => setIsCollapsed(value)}
+      collapsible
+      collapsed={isCollapsed}
+      onCollapse={value => setIsCollapsed(value)}
     >
-      <div 
-        className={classNames(
-          'sider__container',
-          { 'sider__container--collapsed': isCollapsed },
-        )}
+      <div
+        className={classNames('sider__container', {
+          'sider__container--collapsed': isCollapsed,
+        })}
       >
         <div className="sider__title">
           {getTranslation('sider.radio.title', lang)}
@@ -165,7 +162,6 @@ export const Sider: React.FC<Props> = ({
           onChange={handleRadioButton}
           value={countFilms}
           optionType="button"
-          // buttonStyle="solid"
         />
 
         <div className="sider__title">
@@ -174,10 +170,7 @@ export const Sider: React.FC<Props> = ({
 
         <DatePicker
           className="sider__item"
-          placeholder={getTranslation(
-            'sider.year.placeholder',
-            lang
-          )}
+          placeholder={getTranslation('sider.year.placeholder', lang)}
           value={inputYearValue}
           onChange={handleYearChange}
           picker="year"
@@ -186,14 +179,11 @@ export const Sider: React.FC<Props> = ({
         <div className="sider__title">
           {getTranslation('sider.select.title', lang)}
         </div>
-        
+
         <Select
           className="sider__item"
           showSearch
-          placeholder={getTranslation(
-            'sider.select.placeholder',
-            lang
-          )}
+          placeholder={getTranslation('sider.select.placeholder', lang)}
           optionFilterProp="children"
           value={inputGenreValue}
           onChange={handlerSelectGenre}
@@ -222,29 +212,29 @@ export const Sider: React.FC<Props> = ({
         >
           {getTranslation('sider.form.buttonReset', lang)}
         </Button>
-        
+
         <div className="sider__divider"></div>
-        
+
         <div className="sider__title">
           {getTranslation('sider.search.title1', lang)}
         </div>
 
-        <Search 
+        <Search
           className="sider__item"
           placeholder={getTranslation('sider.search.placeholder', lang)}
-          onSearch={onSearch} 
+          onSearch={onSearch}
           value={inputSearchValue}
-          onChange={(e) => setInputSearchValue(e.target.value)}
+          onChange={e => setInputSearchValue(e.target.value)}
           enterButton
           loading={isLoading}
           allowClear
         />
 
-        <Checkbox 
+        <Checkbox
           onChange={onCheckboxChange}
-          style={{ 
-            fontSize: "12px",
-            color: "white",
+          style={{
+            fontSize: '12px',
+            color: 'white',
           }}
           checked={isChecked}
         >
@@ -253,4 +243,4 @@ export const Sider: React.FC<Props> = ({
       </div>
     </Sider>
   );
-}
+};

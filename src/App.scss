@@ -69,15 +69,20 @@
 }
 
 .sider {
-    &__container {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 200px;
-    margin-top: 52px;
-    padding: 0 10px;
-    color: white;
+  
+  &__container {
+      overflow: auto;
+      // height: 100vh;
+      position: fixed;
+      top: 80px;
+      bottom: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 200px;
+      // margin-top: 52px;
+      padding: 0 10px;
+      color: white;
   }
 
   &__container--collapsed {
@@ -85,7 +90,7 @@
   }
 
   &__radio {
-    margin-bottom: 25px;
+    // margin-bottom: 25px;
   }
 
   &__divider {
@@ -96,7 +101,7 @@
   }
 
   &__title {
-    margin: -10px 0 10px 8px;
+    margin: 0 0 10px 8px;
     text-align: center;
     font-size: 16px;
     font-weight: bold;
@@ -117,10 +122,10 @@
 .footer {
   display: flex;
   align-items: center;
+  text-align: center;
   justify-content: center;
   width: 100%;
   height: 48px;
-  color: white;
 }
 
 .filmcontainer {

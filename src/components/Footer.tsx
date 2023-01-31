@@ -10,6 +10,7 @@ export const Footer = () => {
       style={{ 
         background:"#0d253f",
         color: "white",
+        fontSize: "12px",
         paddingLeft: "200px"
       }}
     >
@@ -17,7 +18,7 @@ export const Footer = () => {
       <img
         className="logotmdb"
         src={TmdbFooterLogo}
-        height={20}
+        height={12}
         alt="TMDB logo"
       />
       TheMovieDB API - 2023 - Created by Paul Voronin

@@ -3,7 +3,8 @@
 }
 .logo {
   white-space:nowrap;
-  padding: 0 22px; 
+  margin-right: 22px;
+  margin-left: -30px;
   font-size:32px; 
   font-weight: bold;
   color: #90cea1;
@@ -16,7 +17,7 @@
 }
 
 .lang_selector {
-  padding: 0 22px; 
+  padding: 0 16px 0 16px; 
 }
 
 .container {
@@ -34,6 +35,7 @@
 .main {
   display: flex;
   margin-bottom: 10px;
+  margin: 0 50px;
   
   &__text-wripper {
     width: 65%;
@@ -56,8 +58,14 @@
 }
 
 .content {
-  padding: 0 50px;
+  padding-left: 50px;
+  padding-right: 50px;
   background-color: #01b4e4;
+  
+  &__with_sider {
+    padding-left: 0;
+    padding-right: 50px;
+  }
 
   &__sider {
     min-height: calc(100vh - 112px);
@@ -69,20 +77,17 @@
 }
 
 .sider {
-  
   &__container {
-      overflow: auto;
-      // height: 100vh;
-      position: fixed;
-      top: 80px;
-      bottom: 48px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 200px;
-      // margin-top: 52px;
-      padding: 0 10px;
-      color: white;
+    overflow: auto;
+    position: fixed;
+    top: 80px;
+    bottom: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    padding: 0 10px;
+    color: white;
   }
 
   &__container--collapsed {
@@ -90,7 +95,7 @@
   }
 
   &__radio {
-    // margin-bottom: 25px;
+    margin-bottom: 20px;
   }
 
   &__divider {
@@ -101,22 +106,25 @@
   }
 
   &__title {
-    margin: 0 0 10px 8px;
+    margin: 0 8px 8px 8px;
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     color: white;
   }
 
   &__item {
     width: 100%;
+    margin-bottom: 16px;
   }
 
-  &__checkbox {
-    font-size: 14px;
-    color: white;
-    margin-bottom: 4px;
+  &__search {
+    margin-bottom: -10px;
   }
+}
+
+.button--hidden {
+  display: none;
 }
 
 .footer {
@@ -146,7 +154,7 @@
     right: 0px;
     bottom: 0px;
     left: 0px;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.65);
   }
 }
 

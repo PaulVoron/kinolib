@@ -2,7 +2,12 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { LangContext } from '../utils/LangContext';
 import { getTranslation } from '../utils/getTranslation';
-import { Button, Space, Typography } from 'antd';
+import { 
+  Button, 
+  FloatButton, 
+  Space, 
+  Typography 
+} from 'antd';
 import { VideoCameraFilled, QuestionCircleFilled } from '@ant-design/icons';
 import MainPic from '../images/film.png';
 
@@ -63,6 +68,10 @@ export const HomePage = () => {
         src={MainPic}
         alt="filmtyper" 
       />
+
+        <FloatButton.BackTop 
+          style={{marginRight: "-16px"}}
+        />
     </div>
   );
 }

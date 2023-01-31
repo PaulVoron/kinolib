@@ -25,6 +25,7 @@ import { Sider } from './components/Sider';
 import { Footer } from './components/Footer';
 import { Genre } from './types/Genre';
 import { colorPrimary, colorSuccess } from './utils/colorSettings';
+import classNames from 'classnames';
 
 export const App = () => {
   const [lang, setLang] = useState('en-EN'); //uk-UK
@@ -34,12 +35,15 @@ export const App = () => {
   const showSider = location.pathname === '/films';
 
   const [films, setFilms] = useState<Film[]>([]);
+  const [foundFilms, setFoundFilms] = useState<Film[]>(films);
   const [genres, setGenres] = useState<Genre[]>([]);
   const [countFilms, setCountFilms] = useState(100);
+  const [titleCountFilms, setTitleCountFilms] = useState(100);
   const [year, setYear] = useState<number | null>(null);
   const [genre, setGenre] = useState<number | null>(null);
   const [titleYear, setTitleYear] = useState<number | null>(null);
   const [titleGenre, setTitleGenre] = useState<number | null>(null);
+  const [isInSearch, setIsInSearch] = useState(false);
 
   const { isLoading, loadFilms } = useLoadFilms({
     countFilms,
@@ -51,6 +55,8 @@ export const App = () => {
   });
 
   const {token: { colorBgContainer }} = theme.useToken();
+
+  const filmsToTable = (isInSearch) ? foundFilms : films;
 
   return (
     <ConfigProvider
@@ -67,7 +73,13 @@ export const App = () => {
           <Layout>
             <Header lang={lang} setLang={setLang} />
   
-            <Content className="content">
+            <Content 
+              // className="content"
+              className={classNames(
+                'content',
+                { 'content__with_sider': showSider },
+              )}
+            >
               <Layout
                 className="content__sider"
                 style={{ background: colorBgContainer }}
@@ -80,17 +92,21 @@ export const App = () => {
                     countFilms={countFilms}
                     year={year}
                     genre={genre}
-                    setFilms={setFilms}
+                    films={films}
                     setCountFilms={setCountFilms}
+                    setTitleCountFilms={setTitleCountFilms}
                     setYear={setYear}
                     setGenre={setGenre}
                     setTitleYear={setTitleYear}
                     setTitleGenre={setTitleGenre}
                     loadFilms={loadFilms}
+                    setIsInSearch={setIsInSearch}
+                    setFoundFilms={setFoundFilms}
                   />}
 
                 <Content className="content__body"
-                  style={{ background: colorBgContainer, zIndex: 1 }}>
+                  style={{ background: colorBgContainer, zIndex: 1 }}
+                >
                   <Routes>
                     <Route path="/" element={<HomePage />} />
 
@@ -98,10 +114,10 @@ export const App = () => {
                       path="/films"
                       element={
                         <FilmPage
-                          films={films}
+                          films={filmsToTable}
                           genres={genres}
                           isLoading={isLoading}
-                          countFilms={countFilms}
+                          titleCountFilms={titleCountFilms}
                           year={titleYear}
                           genre={titleGenre}
                         />

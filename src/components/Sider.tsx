@@ -1,15 +1,17 @@
 import { SearchOutlined } from '@ant-design/icons';
+import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import dayjs from 'dayjs';
 import { 
   Button, 
+  Checkbox, 
   DatePicker, 
-  Form, 
+  Input, 
   Layout, 
   Radio, 
   RadioChangeEvent, 
   Select, 
 } from 'antd';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { Genre } from '../types/Genre';
 import { genresOptions } from '../utils/genresOptions';
 import { getTranslation } from '../utils/getTranslation';
@@ -30,13 +32,16 @@ type Props = {
   countFilms: number,
   year: number | null,
   genre: number | null,
-  setFilms: React.Dispatch<React.SetStateAction<Film[]>>,
+  films: Film[],
+  setFoundFilms: React.Dispatch<React.SetStateAction<Film[]>>,
   setCountFilms: React.Dispatch<React.SetStateAction<number>>,
+  setTitleCountFilms: React.Dispatch<React.SetStateAction<number>>,
   setYear: React.Dispatch<React.SetStateAction<number | null>>,
   setGenre: React.Dispatch<React.SetStateAction<number | null>>,
   setTitleYear: React.Dispatch<React.SetStateAction<number | null>>,
   setTitleGenre: React.Dispatch<React.SetStateAction<number | null>>,
   loadFilms: (num?: number) => Promise<void>,
+  setIsInSearch: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const Sider: React.FC<Props> = ({ 
@@ -46,61 +51,49 @@ export const Sider: React.FC<Props> = ({
   countFilms,
   year,
   genre,
-  setFilms,
+  films,
+  setFoundFilms,
   setCountFilms,
+  setTitleCountFilms,
   setYear,
   setGenre,
   setTitleYear,
   setTitleGenre,
-  loadFilms
+  loadFilms,
+  setIsInSearch,
 }) => {
   const { Sider } = Layout;
-  const [collapsed, setCollapsed] = useState(false);
-  const [isUpdBtnDisabled, setIsUpdBtnDisabled] = useState<boolean>(true);
-  const [form] = Form.useForm();
-  
-  const handleRadioButton = useCallback(
-    ({ target: { value } }: RadioChangeEvent) => {
-      setCountFilms(value);
-      setFilms([]);
-      loadFilms(value);
-      setTitleYear(null);
-      setTitleGenre(null);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [loadFilms]
-    );
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const { Search } = Input;
+  const [inputSearchValue, setInputSearchValue] = useState('');
+  const [inputYearValue, setInputYearValue] = useState<dayjs.Dayjs | null>(null);
+  const [inputGenreValue, setInputGenreValue] = useState<number | null>(null);
 
-  const handleUpdateButton = useCallback(
-    (e:
-        | React.MouseEvent<HTMLAnchorElement, MouseEvent>
-        | React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
-      setFilms([]);
-      loadFilms(countFilms);
-      setTitleYear(null);
-      setTitleGenre(null);
-      setIsUpdBtnDisabled(true);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [loadFilms]
-    );
-    
-    const handleDateChange = useCallback((value: dayjs.Dayjs | null): void => {
-      value && setYear(value.get('year'));
-    }, [setYear]);
+  const handleRadioButton = ({ target: { value } }: RadioChangeEvent) => {
+    setCountFilms(value);
+    // setTitleYear(null);
+    // setTitleGenre(null);
+    // loadFilms(value);
+  };
 
-  const handlerSelectGenre = useCallback((value: number) => {
+  const handleYearChange = (value: dayjs.Dayjs | null): void => {
+    value && setYear(value.get('year'));
+    setInputYearValue(value);
+  };
+
+  const handlerSelectGenre = (value: number) => {
     setGenre(value);
-  }, [setGenre]);
+    setInputGenreValue(value);
+  };
 
   const handleSubmitButton = (
     e:
       | React.MouseEvent<HTMLAnchorElement, MouseEvent>
       | React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    setFilms([]);
     loadFilms(countFilms);
+    setTitleCountFilms(countFilms);
     setTitleYear(year);
     setTitleGenre(genre);
   };
@@ -110,28 +103,56 @@ export const Sider: React.FC<Props> = ({
       | React.MouseEvent<HTMLAnchorElement, MouseEvent>
       | React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    setIsUpdBtnDisabled(false);
-    form.resetFields();
     setYear(null);
     setGenre(null);
     setTitleYear(null);
     setTitleGenre(null);
-    setFilms([]);
+    setCountFilms(100);
+    setTitleCountFilms(100);
+    setInputYearValue(null);
+    setInputGenreValue(null);
+    setInputSearchValue('');
     loadFilms(countFilms);
   };
+
+  const onCheckboxChange = (e: CheckboxChangeEvent) => {
+    setIsChecked(e.target.checked);
+  };
+
+  const onSearch = (value: string) => {
+    if (value === '') {
+      setIsInSearch(false)
+      loadFilms(countFilms);
+    } else {
+      setIsInSearch(true);
+      searchFilm(value);
+    }
+  }
+
+  const searchFilm = (searchText: string) => {
+    const searchPrm = (isChecked) ? 'overview' : 'title';
+
+    const filteredFilms = [...films].filter(
+      film => (
+        film[searchPrm].toLowerCase().indexOf(searchText.toLowerCase()) !== -1
+      )
+    );
+    
+    setFoundFilms(filteredFilms);
+  }
 
   return (
     <Sider
       className="sider"
       width={200}
       collapsible 
-      collapsed={collapsed} 
-      onCollapse={(value) => setCollapsed(value)}
+      collapsed={isCollapsed} 
+      onCollapse={(value) => setIsCollapsed(value)}
     >
       <div 
         className={classNames(
           'sider__container',
-          { 'sider__container--collapsed': collapsed },
+          { 'sider__container--collapsed': isCollapsed },
         )}
       >
         <div className="sider__title">
@@ -144,91 +165,91 @@ export const Sider: React.FC<Props> = ({
           onChange={handleRadioButton}
           value={countFilms}
           optionType="button"
-          buttonStyle="solid"
+          // buttonStyle="solid"
         />
 
+        <div className="sider__title">
+          {getTranslation('sider.datepicker.title', lang)}
+        </div>
+
+        <DatePicker
+          className="sider__item"
+          placeholder={getTranslation(
+            'sider.year.placeholder',
+            lang
+          )}
+          value={inputYearValue}
+          onChange={handleYearChange}
+          picker="year"
+        />
+
+        <div className="sider__title">
+          {getTranslation('sider.select.title', lang)}
+        </div>
+        
+        <Select
+          className="sider__item"
+          showSearch
+          placeholder={getTranslation(
+            'sider.select.placeholder',
+            lang
+          )}
+          optionFilterProp="children"
+          value={inputGenreValue}
+          onChange={handlerSelectGenre}
+          filterOption={(input, option) =>
+            ((option?.label ?? '') as string)
+              .toLowerCase()
+              .includes(input.toLowerCase())
+          }
+          options={genresOptions(genres)}
+        />
+
+        <Button
+          className="sider__item"
+          type="primary"
+          loading={isLoading}
+          icon={<SearchOutlined />}
+          onClick={e => handleSubmitButton(e)}
+        >
+          {getTranslation('sider.form.button', lang)}
+        </Button>
+
+        <Button
+          className="sider__item"
+          type="default"
+          onClick={e => handleResetButton(e)}
+        >
+          {getTranslation('sider.form.buttonReset', lang)}
+        </Button>
+        
         <div className="sider__divider"></div>
+        
+        <div className="sider__title">
+          {getTranslation('sider.search.title1', lang)}
+        </div>
 
-        <Form form={form} name="form" autoComplete="off">
-          <Form.Item name="yearFilm">
-            <>
-              <div className="sider__title">
-                {getTranslation('sider.datepicker.title', lang)}
-              </div>
+        <Search 
+          className="sider__item"
+          placeholder={getTranslation('sider.search.placeholder', lang)}
+          onSearch={onSearch} 
+          value={inputSearchValue}
+          onChange={(e) => setInputSearchValue(e.target.value)}
+          enterButton
+          loading={isLoading}
+          allowClear
+        />
 
-              <DatePicker
-                className="sider__item"
-                placeholder={getTranslation(
-                  'sider.year.placeholder',
-                  lang
-                )}
-                onChange={handleDateChange}
-                picker="year"
-              />
-            </>
-          </Form.Item>
-
-          <Form.Item name="genreFilm">
-            <>
-              <div className="sider__title">
-                {getTranslation('sider.select.title', lang)}
-              </div>
-
-              <Select
-                className="sider__item"
-                showSearch
-                placeholder={getTranslation(
-                  'sider.select.placeholder',
-                  lang
-                )}
-                optionFilterProp="children"
-                onChange={handlerSelectGenre}
-                filterOption={(input, option) =>
-                  ((option?.label ?? '') as string)
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
-                }
-                options={genresOptions(genres)}
-              />
-            </>
-          </Form.Item>
-
-          <Form.Item>
-            <Button
-              className="sider__item"
-              type="primary"
-              htmlType="submit"
-              loading={isLoading}
-              icon={<SearchOutlined />}
-              onClick={e => handleSubmitButton(e)}
-            >
-              {getTranslation('sider.form.button', lang)}
-            </Button>
-          </Form.Item>
-
-          <Form.Item>
-            <Button
-              className="sider__item"
-              type="default"
-              htmlType="reset"
-              onClick={e => handleResetButton(e)}
-            >
-              {getTranslation('sider.form.buttonReset', lang)}
-            </Button>
-          </Form.Item>
-          
-          <div className="sider__divider"></div>
-
-          <Button
-            className="sider__item"
-            type="primary"
-            htmlType="submit"
-            onClick={e => handleUpdateButton(e)}
-            disabled={isUpdBtnDisabled}
-          >
-            {getTranslation('sider.form.buttonApply', lang)}
-          </Button>
-        </Form>
+        <Checkbox 
+          onChange={onCheckboxChange}
+          style={{ 
+            fontSize: "12px",
+            color: "white",
+          }}
+          checked={isChecked}
+        >
+          {getTranslation('sider.form.checkbox', lang)}
+        </Checkbox>
       </div>
     </Sider>
   );

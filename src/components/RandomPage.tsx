@@ -1,7 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { 
+  useState, 
+  useContext, 
+  useEffect 
+} from 'react';
 import { LangContext } from '../utils/LangContext';
 import { getTranslation } from '../utils/getTranslation';
-import { Button, Typography } from 'antd';
+import { 
+  Button, 
+  FloatButton, 
+  Typography 
+} from 'antd';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { Spinner } from './Spinner';
 import { fetchData } from '../utils/fetchData';
@@ -88,6 +96,10 @@ export const RandomPage = () => {
           <FilmCard film={films[filmIndex]} className={'filmcard'} />
         </div>
       )}
+
+      <FloatButton.BackTop 
+        style={{marginRight: "-16px"}}
+      />
     </>
   );
 };

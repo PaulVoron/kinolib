@@ -19,7 +19,7 @@ type Props = {
   films: Film[];
   genres: Genre[];
   isLoading: boolean;
-  countFilms: number;
+  titleCountFilms: number;
   year: number | null;
   genre: number | null;
 };
@@ -29,13 +29,12 @@ export const FilmPage: React.FC<Props> = React.memo(
     films, 
     genres, 
     isLoading, 
-    countFilms, 
+    titleCountFilms, 
     year, 
     genre 
   }) => {
     const lang = useContext(LangContext);
     const targetGenre = genres.find(item => item.id === genre)?.name;
-    // const [filmsToTable, setFilmsToTable] = useState<Film[]>(films);
 
     return (
       <div>
@@ -44,7 +43,7 @@ export const FilmPage: React.FC<Props> = React.memo(
         >
           <div className='filmapage__title'>
             TOP
-            <span style={{ color: colorPrimary }}> {countFilms}</span>
+            <span style={{ color: colorPrimary }}> {titleCountFilms}</span>
             {getTranslation('filmPage.title', lang)}
           </div>
         </Title>
@@ -76,7 +75,9 @@ export const FilmPage: React.FC<Props> = React.memo(
           </Col>
         </Row>
 
-        <FloatButton.BackTop />
+        <FloatButton.BackTop 
+          style={{marginRight: "-16px"}}
+        />
       </div>
     );
   }

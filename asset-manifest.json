@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/kinolib/static/css/main.20ca336c.css",
-    "main.js": "/kinolib/static/js/main.9ce0a5b5.js",
+    "main.css": "/kinolib/static/css/main.84f69484.css",
+    "main.js": "/kinolib/static/js/main.f0fa0d24.js",
     "static/media/film.png": "/kinolib/static/media/film.a7188db1f910ea56f6b3.png",
     "static/media/tmdbLogo2.svg": "/kinolib/static/media/tmdbLogo2.caee745762db3e030d38ebb5a167ae05.svg",
     "static/media/tmdbLogo1.svg": "/kinolib/static/media/tmdbLogo1.bb8aa703cb92c9aa31fc1e0b17850ed9.svg",
     "index.html": "/kinolib/index.html",
-    "main.20ca336c.css.map": "/kinolib/static/css/main.20ca336c.css.map",
-    "main.9ce0a5b5.js.map": "/kinolib/static/js/main.9ce0a5b5.js.map"
+    "main.84f69484.css.map": "/kinolib/static/css/main.84f69484.css.map",
+    "main.f0fa0d24.js.map": "/kinolib/static/js/main.f0fa0d24.js.map"
   },
   "entrypoints": [
-    "static/css/main.20ca336c.css",
-    "static/js/main.9ce0a5b5.js"
+    "static/css/main.84f69484.css",
+    "static/js/main.f0fa0d24.js"
   ]
 }

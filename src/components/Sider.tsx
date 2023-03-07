@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import {
   Button,
   Checkbox,
-  ConfigProvider,
   DatePicker,
   Input,
   Layout,
@@ -18,7 +17,6 @@ import { genresOptions } from '../utils/genresOptions';
 import { getTranslation } from '../utils/getTranslation';
 import { Film } from '../types/Film';
 import classNames from 'classnames';
-import { ConfigProviderProps } from 'antd/es/config-provider';
 
 const options = [
   { label: '100', value: 100 },

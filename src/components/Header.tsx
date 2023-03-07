@@ -38,6 +38,7 @@ export const Header: React.FC<Props> = ({ lang, setLang }) =>{
       defaultValue={lang}
       style={{ margin:'auto' }}
       onChange={(value) => setLang(value)}
+      getPopupContainer={trigger => trigger.parentElement}
       options={[
         {value: 'en-EN', label: 'Engish'},
         {value: 'uk-UK', label: 'Українська'},

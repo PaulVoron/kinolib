@@ -38,12 +38,6 @@ export const RandomPage = () => {
       });
   }
 
-  function wait(delay: number) { // to make an illusion of selection magic 😅
-    return new Promise(resolve => {
-      setTimeout(resolve, delay);
-    });
-  }
-
   const handleClickButton = (
     e:
       | React.MouseEvent<HTMLAnchorElement, MouseEvent>
@@ -59,7 +53,7 @@ export const RandomPage = () => {
     setFilmIndex(randomNumber - (page - 1) * 20 - 1);
     setFilms([]);
     setIsLoading(true);
-    wait(1000).then(() => getFilm(requestURL, lang));
+    getFilm(requestURL, lang);
   };
 
   useEffect(() => {

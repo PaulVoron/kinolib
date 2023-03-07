@@ -74,7 +74,6 @@ export const App = () => {
             <Header lang={lang} setLang={setLang} />
   
             <Content 
-              // className="content"
               className={classNames(
                 'content',
                 { 'content__with_sider': showSider },

@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import {
   Button,
   Checkbox,
+  ConfigProvider,
   DatePicker,
   Input,
   Layout,
@@ -17,6 +18,7 @@ import { genresOptions } from '../utils/genresOptions';
 import { getTranslation } from '../utils/getTranslation';
 import { Film } from '../types/Film';
 import classNames from 'classnames';
+import { ConfigProviderProps } from 'antd/es/config-provider';
 
 const options = [
   { label: '100', value: 100 },
@@ -168,13 +170,15 @@ export const Sider: React.FC<Props> = ({
           {getTranslation('sider.datepicker.title', lang)}
         </div>
 
-        <DatePicker
-          className="sider__item"
-          placeholder={getTranslation('sider.year.placeholder', lang)}
-          value={inputYearValue}
-          onChange={handleYearChange}
-          picker="year"
-        />
+        <div className="sider__datepicker" id="datepicker">
+          <DatePicker
+            className="sider__item"
+            placeholder={getTranslation('sider.year.placeholder', lang)}
+            value={inputYearValue}
+            onChange={handleYearChange}
+            picker="year"
+          />
+        </div>
 
         <div className="sider__title">
           {getTranslation('sider.select.title', lang)}
@@ -187,6 +191,7 @@ export const Sider: React.FC<Props> = ({
           optionFilterProp="children"
           value={inputGenreValue}
           onChange={handlerSelectGenre}
+          getPopupContainer={trigger => trigger.parentElement}
           filterOption={(input, option) =>
             ((option?.label ?? '') as string)
               .toLowerCase()
